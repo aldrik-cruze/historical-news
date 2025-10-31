@@ -4,7 +4,7 @@
   margin: 30px auto; 
   padding: 25px; 
   display:grid; 
-  grid-template-columns: 1fr; 
+  grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); 
   gap:30px; 
   margin-bottom:140px;
 }
@@ -278,6 +278,22 @@ body.dark-theme .skeleton-line-long {
   width: 92%;
   margin-bottom: 12px;
 }
+
+/* News feed grid */
+#news-feed { max-width:1200px; margin: 20px auto; padding: 20px; display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:20px; margin-bottom:120px; }
+.news-card { background:var(--card-bg); border:1px solid var(--border-color); border-radius:14px; padding:1.25rem; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; transition: transform .22s ease, box-shadow .22s ease; }
+.news-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.card-image { width:100%; height:200px; object-fit:cover; border-radius:10px; margin-bottom:1rem; }
+.card-content { display:flex; flex-direction:column; gap:.6rem; }
+.card-header { display:flex; justify-content:space-between; align-items:center; }
+.category-tag { font-size:.72rem; padding:.28rem .6rem; border-radius:12px; color:#fff; font-weight:700; text-transform:uppercase; }
+.tag-event { background:#10b981; }
+.tag-birth { background:#0ea5e9; }
+.tag-death { background:#ef4444; }
+.read-more { color:var(--primary-color); font-weight:600; text-decoration:none; display:inline-flex; gap:.5rem; align-items:center; margin-top:auto; }
+.card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.reading-time { font-size: 0.8rem; color: var(--text-secondary); }
+.quiz-btn { background: var(--accent-color); color: white; border: none; padding: 0.5rem 1rem; border-radius: var(--radius-md); cursor: pointer; margin-top: 1rem; }
 
 .card-actions {
   margin-top: auto;

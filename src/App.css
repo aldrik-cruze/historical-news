@@ -144,23 +144,15 @@ a { color: var(--primary-color); }
 
 
 /* Responsive */
-@media (min-width: 560px) {
-  #news-feed {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-@media (min-width: 900px) {
-  #news-feed {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-  .header-tools { right: .75rem; top: .75rem; }
-  .search-input { min-width: 160px; }
-  .quick-facts-panel, .bookmarks-panel { width: 400px; }
+@media (max-width: 900px) {
+  .header-tools { right: .5rem; top: .5rem; }
+  .search-input { min-width: 120px; }
+  .quick-facts-panel, .bookmarks-panel { width: 100%; }
+  #news-feed { padding:12px; grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
+  #news-feed { grid-template-columns: 1fr; }
   .site-header h1 { font-size: 1.5rem; }
-  .header-tools { position: static; justify-content: center; margin: 0 auto 0.6rem; top: auto; right: auto; }
-  .search-input { min-width: 110px; }
 }
 
 /* Utility */
