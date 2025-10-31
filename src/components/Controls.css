@@ -1,215 +1,811 @@
-/* Controls */
+/* ========================================
+   ULTRA MODERN CONTROLS & NAVIGATION
+   Date Navigation, Selects, Buttons
+   ======================================== */
+
+/* ===== DATE NAVIGATION SECTION ===== */
 .date-navigation {
-  padding: 1.25rem;
+  padding: 1.5rem 1rem;
+  animation: fadeInDown 0.7s var(--ease-out) both;
+  animation-delay: 0.1s;
 }
 
 .controls {
-  max-width: 980px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 1.25rem;
+  padding: 1.5rem;
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  position: relative;
 }
 
+.controls::before {
+  content: '📅';
+  position: absolute;
+  top: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ===== DATE RANGE CONTROLS ===== */
 .date-range-controls {
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: slideInUp 0.6s var(--ease-spring) both;
+  animation-delay: 0.2s;
 }
 
+/* ===== YEAR RANGE GROUP ===== */
 .year-range-group {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: #ffffff;
+  gap: 1rem;
+  background: var(--surface);
   border: 2px solid var(--border-color);
-  border-radius: 14px;
-  padding: 0.5rem 0.75rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: border-color 0.2s ease;
+  border-radius: var(--radius-xl);
+  padding: 0.75rem 1.25rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.4s var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+}
+
+.year-range-group::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-royal);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 body.dark-theme .year-range-group {
-  background: rgba(15, 23, 36, 0.9);
+  background: var(--surface);
+  border-color: var(--border-color);
 }
 
 .year-range-group:hover {
   border-color: var(--primary-color);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-xl), 0 0 20px rgba(99, 102, 241, 0.2);
 }
 
+.year-range-group:hover::before {
+  opacity: 0.05;
+}
+
+.year-range-group:focus-within {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), var(--shadow-lg);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* ===== INPUT WRAPPER ===== */
 .year-range-group .input-wrapper {
-  min-width: 110px;
+  min-width: 120px;
+  position: relative;
 }
 
+.year-range-group .input-wrapper::after {
+  content: '📆';
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.year-range-group .input-wrapper:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.2);
+}
+
+/* ===== YEAR INPUT ===== */
 .year-range-group .year-input {
   border: none;
   background: transparent;
-  padding: 0.5rem;
-  font-weight: 600;
+  padding: 0.75rem;
+  font-weight: 700;
+  font-size: 1.05rem;
   width: 100%;
+  color: var(--text-primary);
+  font-family: 'Times New Roman', Times, serif;
+  transition: all 0.3s var(--ease-out);
+  text-align: center;
 }
 
 .year-range-group .year-input:focus {
   outline: none;
+  color: var(--primary-500);
+  transform: scale(1.05);
 }
 
+.year-range-group .year-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.year-range-group .year-input:hover {
+  color: var(--primary-color);
+}
+
+/* ===== DATE SEPARATOR ===== */
 .year-range-group .date-separator {
   color: var(--text-secondary);
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 -0.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  animation: pulse 2s ease-in-out infinite;
+  transition: all 0.3s ease;
 }
 
+.year-range-group:hover .date-separator {
+  color: var(--primary-500);
+  transform: scale(1.2);
+}
+
+/* ===== SELECT WRAPPER ===== */
 .select-wrapper {
   position: relative;
-  min-width: 150px;
+  min-width: 170px;
+  animation: scaleIn 0.5s var(--ease-spring) both;
+  animation-delay: 0.3s;
 }
 
-.select-wrapper.provider-select { min-width: 220px; }
+.select-wrapper.provider-select { 
+  min-width: 240px;
+}
+
+.select-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  background: var(--gradient-royal);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.select-wrapper:hover::before {
+  opacity: 0.1;
+}
 
 .select-wrapper i {
   position: absolute;
-  right: 14px;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-secondary);
-  pointer-events:none;
-  transition: color 0.2s ease;
+  pointer-events: none;
+  transition: all 0.3s var(--ease-spring);
+  z-index: 2;
+  font-size: 0.9rem;
 }
 
 .select-wrapper:hover i {
   color: var(--primary-color);
+  transform: translateY(-50%) rotate(180deg);
 }
 
-/* Modern Select Dropdown */
+.select-wrapper:focus-within i {
+  color: var(--primary-500);
+  transform: translateY(-50%) rotate(180deg) scale(1.1);
+}
+
+/* ===== MODERN SELECT DROPDOWN ===== */
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   background: var(--surface);
   border: 2px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 0.875rem 2.5rem 0.875rem 1rem;
-  font-size: 0.9375rem;
-  font-weight: 500;
+  border-radius: var(--radius-xl);
+  padding: 1rem 3rem 1rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text-primary);
+  font-family: 'Times New Roman', Times, serif;
   width: 100%;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-sm);
+  transition: all 0.3s var(--ease-spring);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 1;
+}
+
+/* Select option styling */
+select option {
+  background: var(--surface);
+  color: var(--text-primary);
+  padding: 0.75rem;
+  font-weight: 500;
 }
 
 body.dark-theme select {
   background: var(--surface);
+  color: var(--text-primary);
+}
+
+body.dark-theme select option {
+  background: var(--surface);
+  color: var(--text-primary);
 }
 
 select:hover {
   border-color: var(--primary-color);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
 }
 
 select:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), var(--shadow-lg);
+  transform: translateY(-2px) scale(1.02);
 }
 
 body.dark-theme select:focus {
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25), var(--shadow-lg);
 }
 
-/* Modern Primary Button */
+select:active {
+  transform: translateY(0) scale(1);
+}
+
+/* ===== MODERN PRIMARY BUTTON ===== */
 .primary-button {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  background: var(--gradient-royal);
   color: white;
   border: none;
-  border-radius: var(--radius-md);
-  padding: 0.875rem 1.75rem;
-  font-weight: 600;
-  font-size: 0.9375rem;
+  border-radius: var(--radius-xl);
+  padding: 1rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'Times New Roman', Times, serif;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.75rem;
   box-shadow: var(--shadow-lg);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s var(--ease-spring);
   position: relative;
   overflow: hidden;
+  animation: popIn 0.6s var(--ease-bounce) both;
+  animation-delay: 0.4s;
 }
 
 .primary-button::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-color) 100%);
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--accent-hover) 100%);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease;
+}
+
+.primary-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
 }
 
 .primary-button:hover {
-  box-shadow: var(--shadow-xl);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-2xl), 0 0 32px rgba(99, 102, 241, 0.4);
+  transform: translateY(-4px) scale(1.05);
 }
 
 .primary-button:hover::before {
   opacity: 1;
 }
 
+.primary-button:hover::after {
+  transform: translateX(100%);
+}
+
 .primary-button:active {
-  transform: translateY(0);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.primary-button:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.4);
+  outline-offset: 3px;
 }
 
 .primary-button i,
 .primary-button span {
   position: relative;
   z-index: 1;
+  transition: transform 0.3s ease;
 }
 
+.primary-button:hover i {
+  transform: scale(1.2) rotate(15deg);
+  animation: wiggle 0.5s ease;
+}
+
+.primary-button:hover span {
+  transform: scale(1.05);
+}
+
+/* Button loading state */
+.primary-button.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.primary-button.loading::before {
+  opacity: 1;
+  animation: shimmer 2s infinite;
+}
+
+/* ===== STANDALONE INPUT WRAPPER ===== */
 .input-wrapper {
   position: relative;
+  animation: fadeInUp 0.6s var(--ease-spring) both;
+  animation-delay: 0.25s;
 }
 
+.input-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  background: var(--gradient-royal);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.input-wrapper:focus-within::before {
+  opacity: 0.1;
+}
+
+/* ===== STANDALONE YEAR INPUT ===== */
 .year-input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background: var(--surface);
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0.875rem 1rem;
-    font-size: 0.9375rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    width: 100%;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: var(--surface);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'Times New Roman', Times, serif;
+  width: 100%;
+  transition: all 0.3s var(--ease-spring);
+  box-shadow: var(--shadow-md);
+}
+
+.year-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+  font-weight: 500;
 }
 
 .year-input:hover {
-    border-color: var(--primary-color);
-    box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
 }
 
 .year-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15), var(--shadow-lg);
+  transform: translateY(-2px) scale(1.02);
 }
 
 body.dark-theme .year-input {
-    background: var(--surface);
+  background: var(--surface);
+  color: var(--text-primary);
 }
 
 body.dark-theme .year-input:focus {
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25), var(--shadow-lg);
 }
 
-@media (max-width: 768px) {
+/* Number input arrows styling */
+.year-input::-webkit-outer-spin-button,
+.year-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.year-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* ===== SECONDARY BUTTON STYLE ===== */
+.secondary-button {
+  background: transparent;
+  color: var(--primary-500);
+  border: 2px solid var(--primary-500);
+  border-radius: var(--radius-xl);
+  padding: 1rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'Times New Roman', Times, serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+}
+
+.secondary-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-royal);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.secondary-button:hover {
+  color: white;
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px) scale(1.05);
+}
+
+.secondary-button:hover::before {
+  opacity: 1;
+}
+
+.secondary-button span,
+.secondary-button i {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== ICON BUTTON STYLE ===== */
+.icon-button {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--border-color);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s var(--ease-spring);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.icon-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-royal);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.icon-button:hover {
+  border-color: var(--primary-500);
+  color: var(--primary-500);
+  transform: translateY(-4px) scale(1.1) rotate(10deg);
+  box-shadow: var(--shadow-xl);
+}
+
+.icon-button:active {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.icon-button i {
+  position: relative;
+  z-index: 1;
+  font-size: 1.1rem;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Mobile devices (320px to 480px) */
+@media (max-width: 480px) {
+  .date-navigation {
+    padding: 1rem 0.75rem;
+  }
+  
   .controls {
+    padding: 1rem 0.75rem;
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .controls::before {
+    top: -1rem;
+    font-size: 1.5rem;
+  }
+  
+  .date-range-controls {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .year-range-group {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .year-range-group .input-wrapper {
+    min-width: 100px;
+    flex: 1;
+  }
+  
+  .year-range-group .date-separator {
+    font-size: 1.1rem;
+  }
+  
+  .select-wrapper {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .select-wrapper.provider-select {
+    min-width: auto;
+  }
+  
+  select {
+    padding: 0.875rem 3rem 0.875rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .primary-button {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .secondary-button {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .icon-button {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .year-input {
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet devices (481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .controls {
+    padding: 1.25rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .date-range-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .year-range-group {
+    width: 100%;
+  }
+  
+  .select-wrapper {
+    width: 100%;
+  }
+  
+  .select-wrapper.provider-select {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .primary-button {
+    width: 100%;
+  }
+  
+  .secondary-button {
+    width: 100%;
+  }
+}
+
+/* Medium devices (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .controls {
+    gap: 1rem;
+  }
+  
+  .date-range-controls {
+    gap: 1rem;
+  }
+  
+  .year-range-group {
+    gap: 0.875rem;
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ===== FORM GROUP LAYOUTS ===== */
+.form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* ===== BUTTON GROUP ===== */
+.button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.button-group .primary-button,
+.button-group .secondary-button {
+  flex: 1;
+  min-width: 150px;
+}
+
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .button-group .primary-button,
+  .button-group .secondary-button {
+    width: 100%;
+  }
+}
+
+/* ===== LOADING STATE FOR CONTROLS ===== */
+.controls.loading {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.controls.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(99, 102, 241, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  border-radius: var(--radius-xl);
+}
+
+/* ===== DISABLED STATES ===== */
+select:disabled,
+.year-input:disabled,
+.primary-button:disabled,
+.secondary-button:disabled,
+.icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ===== VALIDATION STATES ===== */
+.year-input.error,
+select.error {
+  border-color: var(--error-500);
+  animation: shake 0.4s ease;
+}
+
+.year-input.error:focus,
+select.error:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15), var(--shadow-lg);
+}
+
+.year-input.success,
+select.success {
+  border-color: var(--success-500);
+}
+
+.year-input.success:focus,
+select.success:focus {
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15), var(--shadow-lg);
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+  select,
+  .year-input,
+  .primary-button,
+  .secondary-button,
+  .icon-button {
+    min-height: 44px;
+  }
+  
+  .year-range-group:hover,
+  select:hover,
+  .year-input:hover,
+  .primary-button:hover,
+  .secondary-button:hover,
+  .icon-button:hover {
+    transform: none;
+  }
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+@media (prefers-reduced-motion: reduce) {
+  .date-navigation,
+  .date-range-controls,
+  .select-wrapper,
+  .input-wrapper,
+  .primary-button {
+    animation: none !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  select,
+  .year-input {
+    border-width: 3px;
+  }
+  
+  .primary-button {
+    border: 2px solid white;
+  }
+  
+  .secondary-button {
+    border-width: 3px;
   }
 }
