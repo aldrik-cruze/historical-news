@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { QuizModal } from './QuizModal';
 import './NewsFeed.css';
@@ -76,27 +76,29 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
     }
   };
 
-  const filteredNews = news.filter(item => {
-    const query = searchQuery.toLowerCase();
-    const text = item.text.toLowerCase();
-    const year = item.year.toString();
-    const yearNum = parseInt(item.year);
+  const filteredNews = useMemo(() => {
+    return news.filter(item => {
+      const query = searchQuery.toLowerCase();
+      const text = item.text.toLowerCase();
+      const year = item.year.toString();
+      const yearNum = parseInt(item.year);
 
-    const matchesFilter = activeFilter === 'all' || item.type === activeFilter;
-    if (!matchesFilter) {
-      return false;
-    }
+      const matchesFilter = activeFilter === 'all' || item.type === activeFilter;
+      if (!matchesFilter) {
+        return false;
+      }
 
-    if (searchQuery) {
-      const matchesSearch = text.includes(query) || year.includes(query);
-      return matchesSearch;
-    }
+      if (searchQuery) {
+        const matchesSearch = text.includes(query) || year.includes(query);
+        return matchesSearch;
+      }
 
-    const inYearRange =
-      (!yearRange.from || yearNum >= parseInt(yearRange.from)) &&
-      (!yearRange.to || yearNum <= parseInt(yearRange.to));
-    return inYearRange;
-  });
+      const inYearRange =
+        (!yearRange.from || yearNum >= parseInt(yearRange.from)) &&
+        (!yearRange.to || yearNum <= parseInt(yearRange.to));
+      return inYearRange;
+    });
+  }, [news, searchQuery, yearRange, activeFilter]);
 
   return (
     <motion.main

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Controls.css';
 
-export const Controls = ({ onFetch }) => {
+export const Controls = React.memo(({ onFetch }) => {
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [yearFrom, setYearFrom] = useState('');
@@ -84,4 +84,4 @@ export const Controls = ({ onFetch }) => {
       </div>
     </div>
   );
-};
+});

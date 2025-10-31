@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
 import { Controls } from './components/Controls';
 import { NewsFeed } from './components/NewsFeed';
@@ -21,10 +21,10 @@ function App() {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  const handleFetch = (month, day, yearFrom, yearTo) => {
+  const handleFetch = useCallback((month, day, yearFrom, yearTo) => {
     setDate({ month, day });
     setYearRange({ from: yearFrom, to: yearTo });
-  };
+  }, []);
 
   return (
     <div className="app-container">
