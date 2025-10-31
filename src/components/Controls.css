@@ -1,0 +1,215 @@
+/* Controls */
+.date-navigation {
+  padding: 1.25rem;
+}
+
+.controls {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.date-range-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.year-range-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  border: 2px solid var(--border-color);
+  border-radius: 14px;
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: border-color 0.2s ease;
+}
+
+body.dark-theme .year-range-group {
+  background: rgba(15, 23, 36, 0.9);
+}
+
+.year-range-group:hover {
+  border-color: var(--primary-color);
+}
+
+.year-range-group .input-wrapper {
+  min-width: 110px;
+}
+
+.year-range-group .year-input {
+  border: none;
+  background: transparent;
+  padding: 0.5rem;
+  font-weight: 600;
+  width: 100%;
+}
+
+.year-range-group .year-input:focus {
+  outline: none;
+}
+
+.year-range-group .date-separator {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 -0.25rem;
+}
+
+.select-wrapper {
+  position: relative;
+  min-width: 150px;
+}
+
+.select-wrapper.provider-select { min-width: 220px; }
+
+.select-wrapper i {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events:none;
+  transition: color 0.2s ease;
+}
+
+.select-wrapper:hover i {
+  color: var(--primary-color);
+}
+
+/* Modern Select Dropdown */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: var(--surface);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 2.5rem 0.875rem 1rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+body.dark-theme select {
+  background: var(--surface);
+}
+
+select:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+body.dark-theme select:focus {
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+/* Modern Primary Button */
+.primary-button {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.75rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.primary-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-color) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.primary-button:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+.primary-button:hover::before {
+  opacity: 1;
+}
+
+.primary-button:active {
+  transform: translateY(0);
+}
+
+.primary-button i,
+.primary-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.year-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: var(--surface);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    width: 100%;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+}
+
+.year-input:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+}
+
+.year-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+body.dark-theme .year-input {
+    background: var(--surface);
+}
+
+body.dark-theme .year-input:focus {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

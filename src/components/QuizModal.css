@@ -1,0 +1,130 @@
+.quiz-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.quiz-modal-content {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: var(--shadow-xl);
+  transition: all 0.3s ease;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.quiz-option {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-option.selected {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.submit-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.submit-btn:disabled {
+  background: var(--border-color);
+  cursor: not-allowed;
+}
+
+.quiz-result {
+  margin-top: 1.5rem;
+}
+
+.quiz-result h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.correct {
+  color: var(--science-color);
+}
+
+.incorrect {
+  color: var(--politics-color);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.quiz-questions-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.quiz-question {
+  margin-bottom: 1.5rem;
+}
+
+.quiz-question p {
+    font-weight: 600;
+}
+
+.quiz-result ul {
+  list-style-type: none;
+  padding: 0;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.quiz-result li {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.quiz-result li.correct {
+  background-color: rgba(46, 204, 113, 0.1);
+  border-left: 5px solid var(--science-color);
+}
+
+.quiz-result li.incorrect {
+  background-color: rgba(231, 76, 60, 0.1);
+  border-left: 5px solid var(--politics-color);
+}

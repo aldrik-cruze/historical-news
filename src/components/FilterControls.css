@@ -1,0 +1,4 @@
+/* Filter controls */
+.filter-controls { display:flex; gap:0.5rem; justify-content:center; padding:1rem; margin:1rem auto; max-width:fit-content; }
+.filter-btn { background:transparent; border:1px solid var(--border-color); padding:.5rem .9rem; border-radius:8px; color:var(--text-secondary); cursor:pointer; display:flex; gap:.5rem; align-items:center; }
+.filter-btn.active { background:var(--primary-color); color:#fff; border-color:var(--primary-color); }

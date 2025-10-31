@@ -1,0 +1,3 @@
+.share-buttons { display:flex; gap:.5rem; }
+.share-btn { width:34px; height:34px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; color:#fff; border:none; cursor:pointer; }
+.share-btn.facebook { background:#1877f2; } .share-btn.twitter { background:#1da1f2; } .share-btn.whatsapp { background:#25d366; } .share-btn.linkedin { background:#0077b5; }
