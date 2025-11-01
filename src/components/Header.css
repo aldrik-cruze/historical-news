@@ -108,6 +108,20 @@
   transition: all 0.3s ease;
 }
 
+
+
+.theme-toggle.right-corner {
+    position: relative;
+    right: 0;
+    top: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+
+
+
+
+
 .theme-toggle.right-corner:hover {
   transform: translateY(-3px) scale(1.1);
   background: rgba(255, 255, 255, 0.2);
