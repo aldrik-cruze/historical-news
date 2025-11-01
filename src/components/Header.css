@@ -9,6 +9,37 @@
   overflow: hidden;
   text-align: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* ===== DARK MODE STYLES ===== */
+.dark .site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  color: #e2e8f0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.dark .search-input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+}
+
+.dark .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.dark .search-btn,
+.dark .clear-search-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+}
+
+.dark .theme-toggle.right-corner {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
 }
 
 /* ===== ANIMATIONS ===== */
@@ -36,7 +67,7 @@
   position: relative;
 }
 
-/* Make title bigger */
+/* ===== HEADER TITLE ===== */
 .site-header h1 {
   font-size: clamp(2.5rem, 7vw, 4rem);
   font-weight: 900;
@@ -51,7 +82,14 @@
   animation: float 4s ease-in-out infinite, pulseGlow 5s ease-in-out infinite;
 }
 
-/* Theme toggle button on the right */
+/* ===== DARK MODE TITLE ===== */
+.dark .site-header h1 {
+  background: linear-gradient(135deg, #cbd5e1 0%, #f1f5f9 50%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== THEME TOGGLE BUTTON ===== */
 .theme-toggle.right-corner {
   position: absolute;
   right: 1rem;
