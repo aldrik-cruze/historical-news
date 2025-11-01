@@ -1,0 +1,468 @@
+/* src/App.css */
+
+/* 1. Import new, modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600&display=swap');
+
+/* 2. Define New Light Mode Color Palette */
+:root {
+  --primary-color: #6366F1; /* Modern Indigo */
+  --primary-light: #818CF8;
+  --primary-dark: #4F46E5;
+
+  --accent-color: #F59E0B; /* Warm Amber/Gold */
+  --accent-light: #FBBF24;
+  --accent-dark: #D97706;
+
+  --secondary-color: #EC4899; /* Hot Pink */
+  --tertiary-color: #14B8A6; /* Teal */
+  --emerald: #10B981;
+  --cyan: #06B6D4;
+  --orange: #F97316;
+  --purple: #A855F7;
+
+  --background: #F8FAFC; /* Ultra soft gray-blue */
+  --surface: #FFFFFF;
+  --card-bg: #FFFFFF;
+
+  --text-primary: #1a202c; /* Very dark gray for maximum contrast */
+  --text-secondary: #4A5568; /* Darker gray for better visibility */
+  --border-color: #E2E8F0;
+
+  /* Category Colors (vibrant) */
+  --tag-event: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  --tag-birth: linear-gradient(135deg, #10B981 0%, #14B8A6 100%);
+  --tag-death: linear-gradient(135deg, #EF4444 0%, #F97316 100%);
+
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.5);
+
+  /* Gradients (enhanced) */
+  --gradient-primary: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  --gradient-accent: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
+  --gradient-royal: linear-gradient(135deg, #4F46E5 0%, #EC4899 100%);
+  --gradient-aurora: linear-gradient(135deg, #667EEA 0%, #764BA2 50%, #F093FB 100%);
+  --gradient-mesh: linear-gradient(135deg, #667EEA 0%, #F093FB 50%, #FBBF24 100%);
+  --gradient-fire: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 50%, #FF6B6B 100%);
+  --gradient-ocean: linear-gradient(135deg, #667EEA 0%, #06B6D4 50%, #14B8A6 100%);
+  
+  /* Neon gradients */
+  --gradient-neon: linear-gradient(135deg, #00F5FF 0%, #A020F0 100%);
+  --gradient-sunset: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+  --gradient-cosmic: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F59E0B 100%);
+
+  /* Shadows (enhanced) */
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 16px -2px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 40px -8px rgba(0, 0, 0, 0.12), 0 8px 16px -8px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.4);
+  --shadow-neon: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 40px rgba(99, 102, 241, 0.3);
+  --shadow-color: 0 10px 40px rgba(99, 102, 241, 0.2), 0 0 80px rgba(236, 72, 153, 0.15);
+
+  /* Spacing & Radius */
+  --spacing-md: 1rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* Animation */
+  --duration-normal: 250ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 3. Define New Dark Mode Color Palette */
+body.dark-theme {
+  --primary-color: #818CF8; /* Vibrant Indigo */
+  --primary-light: #A5B4FC;
+  --primary-dark: #6366F1;
+
+  --accent-color: #FBBF24; /* Brighter Amber */
+  --accent-light: #FDE047;
+  --accent-dark: #F59E0B;
+
+  --secondary-color: #F472B6; /* Bright Pink */
+  --tertiary-color: #2DD4BF; /* Cyan */
+
+  --background: #0F172A; /* Deep Navy Blue */
+  --surface: #1E293B; /* Lighter Navy */
+  --card-bg: #1E293B;
+
+  --text-primary: #F7FAFC; /* Almost white for maximum contrast */
+  --text-secondary: #E2E8F0; /* Very light gray for better visibility */
+  --border-color: #334155;
+
+  --glass-bg: rgba(30, 41, 59, 0.8);
+  --glass-border: rgba(99, 102, 241, 0.3);
+  
+  /* Enhanced dark gradients */
+  --gradient-primary: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  --gradient-accent: linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
+  --gradient-neon: linear-gradient(135deg, #00F5FF 0%, #A020F0 100%);
+  
+  /* Enhanced shadows */
+  --shadow-glow: 0 0 40px rgba(129, 140, 248, 0.5);
+  --shadow-neon: 0 0 30px rgba(129, 140, 248, 0.7), 0 0 60px rgba(129, 140, 248, 0.4);
+}
+
+/* 4. Base & Typography Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  /* New Font: Inter for UI */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--background);
+  background-image: 
+    radial-gradient(at 40% 20%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(236, 72, 153, 0.12) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(245, 158, 11, 0.1) 0px, transparent 50%),
+    radial-gradient(at 80% 100%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(20, 184, 166, 0.1) 0px, transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated mesh gradient overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.05) 50%, transparent 100%);
+  animation: meshMove 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes meshMove {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 1; }
+  25% { transform: translate(5%, -5%) scale(1.05); opacity: 0.8; }
+  50% { transform: translate(-5%, 5%) scale(0.95); opacity: 1; }
+  75% { transform: translate(-5%, -5%) scale(1.05); opacity: 0.8; }
+}
+
+body.dark-theme {
+  background-image: 
+    radial-gradient(at 40% 20%, rgba(129, 140, 248, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(244, 114, 182, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(251, 191, 36, 0.1) 0px, transparent 50%),
+    radial-gradient(at 80% 100%, rgba(129, 140, 248, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(45, 212, 191, 0.1) 0px, transparent 50%);
+}
+
+/* New Font: Lora for formal text (cards) */
+.formal-font {
+  font-family: 'Lora', 'Times New Roman', Times, serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* Using Inter for headings for a cleaner look */
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--primary-light);
+}
+
+/* 5. Modern Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+  border-radius: var(--radius-full);
+  border: 2px solid var(--background);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--primary-light), var(--accent-light));
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--background);
+}
+
+/* 6. Animations */
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* 7. Utility & Layout */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Scroll Progress Indicator */
+#scrollIndicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--gradient-mesh);
+  background-size: 200% 100%;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 9999;
+  animation: gradientMove 3s linear infinite;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.5);
+}
+
+/* Back to top button */
+#backToTop {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(100px);
+  pointer-events: none;
+}
+
+#backToTop.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+#backToTop:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.6);
+}
+
+#backToTop::before {
+  content: '↑';
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1rem;
+  padding-top: 220px; /* Increased space to ensure filter controls are visible below fixed header */
+  position: relative;
+  z-index: 1;
+}
+
+/* 8. Custom Text Selection */
+::selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+::-moz-selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+body.dark-theme ::selection {
+  background: var(--primary-light);
+  color: var(--background);
+}
+
+/* 9. Focus styles for accessibility */
+*:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible {
+  outline-offset: 4px;
+}
+
+/* 10. Loading states */
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0%,
+    var(--border-color) 50%,
+    var(--surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* 11. Responsive improvements */
+@media (max-width: 768px) {
+  main {
+    padding: 0.5rem;
+    padding-top: 190px; /* Adjust for smaller header on tablets */
+  }
+  
+  #backToTop {
+    bottom: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding-top: 175px; /* Adjust for even smaller header on mobile */
+  }
+}
+
+/* 12. Smooth transitions for theme switching */
+body,
+.site-header,
+.site-footer,
+.news-card,
+.filter-controls,
+.modern-button {
+  transition: 
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* 8. Fixes from previous steps (you can remove duplicates if you find them) */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  padding-top: 1rem;
+  width: 100%;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  border-top: none;
+  gap: 0.5rem;
+}
+
+.quiz-btn.modern-button {
+  width: 100%;
+  margin-top: 0.75rem;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+}
+.quiz-btn.modern-button:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--shadow-glow);
+}
+
+.scroll-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 2000;
+  transition: transform 0.1s linear;
+}
+
+.back-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--primary-color);
+  border: 2px solid var(--border-color);
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body.dark-theme .back-to-top-btn {
+  background: var(--surface);
+  color: var(--primary-light);
+}

@@ -1,0 +1,43 @@
+/* src/components/ShareButtons.css */
+.share-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Default color for buttons NOT in the footer */
+  color: var(--text-secondary);
+  transition: all 0.2s ease-out;
+}
+
+.share-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.share-btn:hover {
+  transform: scale(1.15);
+  color: var(--primary-color); /* Default hover color */
+}
+
+/* NEW STYLES:
+  When share buttons are inside the dark footer...
+*/
+.site-footer .share-btn {
+  /* ...make their default color white/light grey */
+  color: var(--text-secondary);
+}
+
+.site-footer .share-btn:hover {
+  /* ...make their hover color brighter */
+  color: var(--primary-light);
+}

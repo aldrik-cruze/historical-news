@@ -1,0 +1,8 @@
+/* src/components/ui/Card.css */
+.modern-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s var(--ease-out);
+}
