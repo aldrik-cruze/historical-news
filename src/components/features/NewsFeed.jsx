@@ -92,8 +92,10 @@ function NewsCard({ item, searchQuery, onQuizClick }) {
         loading="lazy"
       />
       <div className="card-content">
-        <span className={`category-tag tag-${item.type || 'event'}`}>{item.type || 'Event'}</span>
-        <h2>{item.year}</h2>
+        <div className="card-header">
+          <span className={`category-tag tag-${item.type || 'event'}`}>{item.type || 'Event'}</span>
+          <h2>{item.year}</h2>
+        </div>
         <p>{getHighlightedText(item.text, searchQuery)}</p>
         <div className="card-actions">
           <div className="card-footer">
@@ -159,39 +161,97 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
     return [];
   };
 
-  // Fetch data when search query changes - search across multiple dates
+  // Fetch data when search query changes - use Wikipedia search API
   useEffect(() => {
     if (searchQuery && searchQuery.trim()) {
       const performSearch = async () => {
         setIsSearching(true);
         setLoading(true);
         
+        try {
+          // Use Wikipedia search API for better results
+          const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(searchQuery)}&srlimit=50`;
+          const response = await fetch(searchUrl);
+          
+          if (response.ok) {
+            const data = await response.json();
+            const searchResults = data.query?.search || [];
+            
+            // Convert search results to our event format
+            const events = searchResults.map(result => ({
+              text: result.title + ': ' + result.snippet.replace(/<[^>]*>/g, ''),
+              year: extractYearFromSnippet(result.snippet) || new Date().getFullYear(),
+              type: 'event',
+              pages: [{
+                thumbnail: { source: '' },
+                content_urls: {
+                  desktop: {
+                    page: `https://en.wikipedia.org/wiki/${encodeURIComponent(result.title.replace(/ /g, '_'))}`
+                  }
+                }
+              }]
+            }));
+            
+            // Also search through cached date data for more relevant results
+            const allCachedData = [];
+            cache.current.forEach(value => {
+              allCachedData.push(...value);
+            });
+            
+            const query = searchQuery.toLowerCase();
+            const filteredCached = allCachedData.filter(item => 
+              item.text.toLowerCase().includes(query) || 
+              item.year.toString().includes(query)
+            );
+            
+            // Combine and deduplicate results
+            const combinedResults = [...filteredCached, ...events];
+            const uniqueResults = combinedResults.filter((item, index, self) =>
+              index === self.findIndex(t => t.text === item.text)
+            );
+            
+            setNews(uniqueResults);
+          } else {
+            // Fallback to the old method if API fails
+            await fallbackSearch();
+          }
+        } catch (error) {
+          console.error('Search failed:', error);
+          await fallbackSearch();
+        }
+        
+        setVisibleCount(ITEMS_PER_PAGE);
+        setLoading(false);
+        setIsSearching(false);
+      };
+      
+      // Fallback search method
+      const fallbackSearch = async () => {
         const allResults = [];
         const today = new Date();
         
-        // Search through entire year (sample every 7 days to reduce API calls)
+        // Search through entire year (sample every 7 days)
         const daysToFetch = [];
         for (let month = 1; month <= 12; month++) {
           const daysInMonth = new Date(today.getFullYear(), month, 0).getDate();
-          // Sample 4-5 days per month (every 7 days)
           for (let day = 1; day <= daysInMonth; day += 7) {
             daysToFetch.push({ month, day });
           }
         }
 
-        // Fetch in batches to avoid overwhelming the API
         for (const { month, day } of daysToFetch) {
           const data = await fetchDateData(month, day);
           allResults.push(...data);
-          
-          // Small delay to be respectful to the API
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise(resolve => setTimeout(resolve, 50));
         }
 
         setNews(allResults);
-        setVisibleCount(ITEMS_PER_PAGE);
-        setLoading(false);
-        setIsSearching(false);
+      };
+      
+      // Helper function to extract year from snippet
+      const extractYearFromSnippet = (snippet) => {
+        const yearMatch = snippet.match(/\b(1[0-9]{3}|20[0-2][0-9])\b/);
+        return yearMatch ? parseInt(yearMatch[0]) : null;
       };
 
       performSearch();

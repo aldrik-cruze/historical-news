@@ -131,6 +131,16 @@ body.dark-theme .header-bg-shapes {
   align-items: flex-start;
   gap: 0.5rem;
   margin: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.header-title:hover {
+  transform: scale(1.02);
+}
+
+.header-title:active {
+  transform: scale(0.98);
 }
 
 .title-main {
@@ -144,9 +154,30 @@ body.dark-theme .header-bg-shapes {
   animation: gradientShift 8s ease infinite;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  text-shadow: 0 0 80px rgba(99, 102, 241, 0.3);
-  filter: drop-shadow(0 4px 24px rgba(99, 102, 241, 0.2));
   position: relative;
+  
+  /* Fallback for better visibility */
+  color: var(--text-primary);
+}
+
+/* Ensure gradient is visible */
+@supports (-webkit-background-clip: text) {
+  .title-main {
+    background: linear-gradient(135deg, #667EEA 0%, #764BA2 50%, #F093FB 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Dark theme gradient */
+body.dark-theme .title-main {
+  background: linear-gradient(135deg, #818CF8 0%, #A855F7 50%, #F472B6 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .title-decoration {
@@ -203,39 +234,57 @@ body.dark-theme .header-bg-shapes {
 @media (max-width: 768px) {
   .site-header {
     min-height: auto;
+    position: sticky;
   }
 
   .header-content {
-    padding: 0.75rem 1rem 0.75rem;
-    gap: 0.75rem;
+    padding: 1rem 1rem;
+    gap: 1rem;
   }
 
   .header-title-wrapper {
     gap: 1rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-title-section {
+    flex: 1;
   }
 
   .title-icon-wrapper {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
   }
 
   .title-icon {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 
   .title-main {
-    font-size: clamp(1.3rem, 6vw, 2rem);
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    white-space: nowrap;
   }
 
   .title-decoration {
-    width: 80px;
+    width: 60px;
     height: 2px;
   }
 
   .theme-toggle-btn {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .controls-container {
+    width: 100%;
+  }
+
+  /* Hide background shapes on mobile for better performance */
+  .header-bg-shapes {
+    display: none;
   }
 }
 
@@ -244,8 +293,36 @@ body.dark-theme .header-bg-shapes {
     min-height: auto;
   }
 
-  .header-title-section {
+  .header-content {
+    padding: 0.75rem 0.75rem;
     gap: 0.75rem;
+  }
+
+  .header-title-section {
+    gap: 0.5rem;
+  }
+
+  .title-icon-wrapper {
+    width: 35px;
+    height: 35px;
+  }
+
+  .title-icon {
+    font-size: 1.3rem;
+  }
+
+  .title-main {
+    font-size: clamp(1.1rem, 5vw, 1.5rem);
+  }
+
+  .title-decoration {
+    width: 50px;
+  }
+
+  .theme-toggle-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
   }
 }
 

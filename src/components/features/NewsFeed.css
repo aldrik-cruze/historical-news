@@ -207,13 +207,22 @@ body.dark-theme .reading-time {
 }
 
 /* 4. Ultra-Cool Category Tags with Glow and Animation */
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .category-tag {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 0.5rem 1.2rem;
+  position: relative;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.4rem 1rem;
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: #fff;
   text-transform: uppercase;
@@ -224,7 +233,6 @@ body.dark-theme .reading-time {
   z-index: 10;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  position: relative;
   overflow: hidden;
 }
 
@@ -250,7 +258,7 @@ body.dark-theme .reading-time {
 }
 
 .news-card:hover .category-tag {
-  transform: scale(1.12) rotate(-2deg);
+  transform: scale(1.08);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
@@ -470,22 +478,120 @@ body.dark-theme .skeleton-card::before {
 @media (max-width: 768px) {
   #news-feed {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 1rem;
+    gap: 1.25rem;
+    padding: 1rem 0.75rem;
   }
   
   .news-card {
-    border-radius: 20px;
+    border-radius: 18px;
+    min-height: 200px;
+  }
+
+  .news-card:hover {
+    transform: translateY(-4px) scale(1.01);
   }
   
   .card-image {
-    height: 200px;
+    height: 180px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .category-tag {
+    top: 0;
+    left: 0;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.65rem;
+  }
+
+  /* Disable expensive animations on mobile */
+  .news-card:hover .category-tag {
+    transform: scale(1.05);
+  }
+
+  .category-tag::before,
+  .news-card::before {
+    animation: none;
+  }
+
+  @keyframes tagGlow {
+    0%, 100% { 
+      filter: brightness(1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  #news-feed {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .news-card {
+    border-radius: 16px;
+    min-height: 180px;
+  }
+
+  .card-image {
+    height: 160px;
+  }
+
+  .card-body {
+    padding: 0.875rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-text {
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+
+  .category-tag {
+    top: 0;
+    left: 0;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.6rem;
+    border-radius: 16px;
+  }
+
+  .card-footer {
+    font-size: 0.8rem;
+  }
+
+  .quiz-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+
+  /* Simplify animations on small phones */
+  .news-card:hover {
+    transform: translateY(-2px);
   }
 }
 
 @media (min-width: 769px) and (max-width: 1200px) {
   #news-feed {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
   }
 }
   box-shadow: var(--shadow-md);

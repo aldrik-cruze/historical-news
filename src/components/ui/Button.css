@@ -153,3 +153,73 @@
   padding: 1rem 2.5rem;
   font-size: 1.125rem;
 }
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .modern-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    border-radius: 14px;
+  }
+
+  .modern-button:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  /* Reduce animation intensity on mobile */
+  @keyframes buttonPulse {
+    0%, 100% { 
+      box-shadow: 
+        0 8px 20px rgba(99, 102, 241, 0.4),
+        0 0 30px rgba(236, 72, 153, 0.3);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .modern-button {
+    padding: 0.7rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    letter-spacing: 0.3px;
+  }
+
+  .modern-button.small {
+    padding: 0.55rem 1.2rem;
+    font-size: 0.825rem;
+  }
+
+  .modern-button.large {
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+  }
+
+  /* Simplify hover effects for better performance */
+  .modern-button:hover {
+    transform: translateY(-1px);
+    animation: none;
+  }
+
+  .button-icon {
+    font-size: 1.1em;
+  }
+
+  .modern-button:hover .button-icon {
+    transform: scale(1.05);
+  }
+}
+
+/* Touch-friendly adjustments */
+@media (hover: none) and (pointer: coarse) {
+  .modern-button {
+    min-height: 44px;
+  }
+
+  .modern-button:hover {
+    transform: none;
+  }
+
+  .modern-button:active {
+    transform: scale(0.98);
+  }
+}

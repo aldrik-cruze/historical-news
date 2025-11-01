@@ -117,6 +117,9 @@ body.dark-theme {
 
 html {
   scroll-behavior: smooth;
+  /* Improve text rendering on mobile */
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -136,6 +139,10 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Improve scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Animated mesh gradient overlay */
@@ -309,7 +316,7 @@ main {
   max-width: 1600px;
   margin: 0 auto;
   padding: 1rem;
-  padding-top: 220px; /* Increased space to ensure filter controls are visible below fixed header */
+  padding-top: 200px; /* Space for fixed header */
   position: relative;
   z-index: 1;
 }
@@ -360,9 +367,17 @@ button:focus-visible {
 
 /* 11. Responsive improvements */
 @media (max-width: 768px) {
+  body::before {
+    display: none; /* Disable mesh animation on mobile for better performance */
+  }
+
+  body {
+    background-attachment: scroll; /* Better performance on mobile */
+  }
+
   main {
     padding: 0.5rem;
-    padding-top: 190px; /* Adjust for smaller header on tablets */
+    padding-top: 165px; /* Adjust for smaller header on tablets */
   }
   
   #backToTop {
@@ -370,13 +385,84 @@ button:focus-visible {
     right: 1rem;
     width: 48px;
     height: 48px;
+    font-size: 1.3rem;
+  }
+
+  #backToTop:hover {
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  /* Optimize scrollbar for touch devices */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
 }
 
 @media (max-width: 480px) {
   main {
-    padding-top: 175px; /* Adjust for even smaller header on mobile */
+    padding: 0.5rem 0.5rem;
+    padding-top: 155px; /* Adjust for even smaller header on mobile */
   }
+
+  #backToTop {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    bottom: 0.75rem;
+    right: 0.75rem;
+  }
+
+  #backToTop::before {
+    font-size: 1.6rem;
+  }
+
+  /* Thinner scrollbar on mobile */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* Performance optimizations for mobile devices */
+@media (max-width: 768px) {
+  /* Reduce motion for better performance */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Optimize for touch devices */
+  * {
+    -webkit-tap-highlight-color: rgba(99, 102, 241, 0.1);
+  }
+}
+
+/* Landscape orientation optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+  main {
+    padding-top: 140px;
+  }
+
+  #backToTop {
+    bottom: 0.5rem;
+    right: 0.5rem;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Modal scroll lock */
+body.modal-open {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100vh !important;
 }
 
 /* 12. Smooth transitions for theme switching */

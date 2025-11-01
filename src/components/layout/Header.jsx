@@ -120,7 +120,7 @@ export const Header = ({ onDateChange, onSearch, onYearChange, onToggleTheme, th
                 📰
               </motion.div>
             </div>
-            <h1 className="header-title">
+            <h1 className="header-title" onClick={() => window.location.reload()} style={{ cursor: 'pointer' }}>
               <span className="title-main">Historical News</span>
               <motion.span 
                 className="title-decoration"

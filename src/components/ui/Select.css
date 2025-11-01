@@ -116,16 +116,57 @@ body.dark-theme .modern-select option {
     min-width: 100px;
     border-radius: 14px;
   }
+
+  .modern-select:hover {
+    transform: translateY(-1px);
+  }
+
+  .modern-select:focus {
+    transform: translateY(-1px);
+  }
   
   .select-label {
     font-size: 0.7rem;
+  }
+
+  /* Larger tap target for mobile */
+  .modern-select {
+    min-height: 44px;
   }
 }
 
 @media (max-width: 480px) {
   .modern-select {
-    padding: 0.65rem 2.25rem 0.65rem 0.85rem;
+    padding: 0.7rem 2.25rem 0.7rem 0.85rem;
     font-size: 0.9rem;
     border-radius: 12px;
+    min-height: 44px;
+  }
+
+  .select-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* Optimize background size for small screens */
+  .modern-select {
+    background-size: 100% 100%, 1.25em 1.25em;
+    background-position: left top, right 0.5rem center;
+  }
+
+  body.dark-theme .modern-select {
+    background-size: 100% 100%, 1.25em 1.25em;
+    background-position: left top, right 0.5rem center;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .modern-select {
+    min-height: 48px;
+  }
+
+  .modern-select:hover {
+    transform: none;
   }
 }

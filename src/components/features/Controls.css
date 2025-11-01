@@ -258,21 +258,23 @@ body.dark-theme .search-input:focus {
 
 @media (max-width: 768px) {
   .controls-wrapper {
-    padding: 1.25rem 1.25rem;
+    padding: 1rem;
     gap: 1rem;
-    border-radius: 20px;
+    border-radius: 18px;
+    margin: 0 1rem;
   }
 
   .controls-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 
   .control-group {
     justify-content: center;
     width: 100%;
     flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .date-filter-group {
@@ -282,56 +284,98 @@ body.dark-theme .search-input:focus {
   .control-input {
     width: 100%;
     max-width: 140px;
-  }
-
-  .search-form {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .search-input {
-    min-width: 0;
-    width: 100%;
-    padding: 0.85rem 1rem 0.85rem 3.25rem;
-  }
-
-  .search-form::before {
-    left: 1rem;
-    font-size: 1.2rem;
-  }
-
-  .control-group .modern-button {
-    flex-grow: 1;
-    min-width: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .controls-wrapper {
-    padding: 1rem 1rem;
-    border-radius: 18px;
-  }
-
-  .control-input {
     font-size: 0.95rem;
     padding: 0.75rem 1rem;
     border-radius: 14px;
   }
 
+  .search-form {
+    width: 100%;
+    min-width: 0;
+    gap: 0.5rem;
+  }
+
   .search-input {
+    min-width: 0;
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 3rem;
     font-size: 0.95rem;
-    padding: 0.8rem 0.85rem 0.8rem 3rem;
     border-radius: 16px;
   }
 
   .search-form::before {
+    left: 1rem;
     font-size: 1.1rem;
+  }
+
+  .control-group .modern-button {
+    flex-grow: 1;
+    min-width: 0;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls-wrapper {
+    padding: 0.75rem;
+    border-radius: 16px;
+    margin: 0 0.75rem;
+  }
+
+  .controls-row {
+    gap: 0.75rem;
+  }
+
+  .control-group {
+    gap: 0.5rem;
+  }
+
+  .date-filter-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .date-filter-group > * {
+    width: 100%;
+  }
+
+  .date-filter-group .modern-button {
+    grid-column: 1 / -1;
+  }
+
+  .control-input {
+    font-size: 0.9rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 12px;
+    max-width: none;
+  }
+
+  .search-input {
+    font-size: 0.9rem;
+    padding: 0.75rem 0.75rem 0.75rem 2.75rem;
+    border-radius: 14px;
+  }
+
+  .search-form::before {
+    font-size: 1rem;
     left: 0.85rem;
   }
   
   .control-group .modern-button {
-    padding: 0.75rem 1.5rem;
-    border-radius: 14px;
+    padding: 0.7rem 1.25rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+  }
+
+  /* Ensure touch-friendly targets */
+  .control-input,
+  .search-input,
+  .control-group .modern-button {
+    min-height: 44px;
   }
 }
 
