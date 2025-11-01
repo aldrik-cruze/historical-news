@@ -21,10 +21,20 @@ echo.
 echo [3/4] Checking remote repository...
 git remote -v
 
+REM Check current branch
+echo.
+echo Checking current branch...
+git branch
+
+REM Rename branch to main if needed
+echo.
+echo Ensuring branch is named 'main'...
+git branch -M main
+
 REM Push to GitHub
 echo.
 echo [4/4] Pushing to GitHub...
-git push origin main
+git push -u origin main
 
 echo.
 echo ====================================
