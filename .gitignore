@@ -1,4 +1,26 @@
+# Dependencies
+node_modules/
+node_modules/.cache/
 
+# Build outputs
+dist/
 
-#Ignore vscode AI rules
-.github\instructions\codacy.instructions.md
+# Environment files
+.env
+.env.local
+.env.production
+
+# Editor directories
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
