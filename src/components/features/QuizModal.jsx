@@ -154,5 +154,51 @@ export const QuizModal = ({ event, onClose }) => {
                           className={`quiz-option ${selectedAnswers[index] === option ? 'selected' : ''}`}
                           onClick={() => handleAnswerSelect(index, option)}
                         >
-                          {option}*
-
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <motion.div
+                className="quiz-result"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <h3>Your Score: {calculateScore()} / {questions.length}</h3>
+                <ul>
+                  {questions.map((q, index) => (
+                    <li key={index} className={selectedAnswers[index] === q.correctAnswer ? 'correct' : 'incorrect'}>
+                      <strong>Question {index + 1}:</strong> {q.question}
+                      <br />
+                      <strong>Your answer:</strong> {selectedAnswers[index] || "Not answered"}
+                      <br />
+                      <strong>Correct answer:</strong> {q.correctAnswer}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+          </div>
+          
+          <div className="quiz-modal-footer">
+            {!showResult && (
+              <button
+                className="submit-btn"
+                onClick={handleAnswerSubmit}
+                disabled={Object.keys(selectedAnswers).length !== questions.length}
+              >
+                Submit Answers
+              </button>
+            )}
+            <button className="close-btn" onClick={onClose}>
+              {showResult ? 'Close' : 'Cancel'}
+            </button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
