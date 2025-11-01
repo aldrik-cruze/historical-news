@@ -1,0 +1,193 @@
+/* Enhanced Filter Controls */
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  margin: 1rem auto 1.5rem;
+  max-width: fit-content;
+  background: var(--glass-bg);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(99, 102, 241, 0.08) 100%);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-radius: 24px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 
+    var(--shadow-lg),
+    0 0 60px rgba(99, 102, 241, 0.15);
+  position: relative;
+  z-index: 90;
+  overflow: hidden;
+}
+
+/* Animated border gradient */
+.filter-controls::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 2px;
+  background: var(--gradient-cosmic);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotateBorder 3s linear infinite;
+}
+
+@keyframes rotateBorder {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.search-mode-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  animation: slideInDown 0.3s ease-out;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filter-btn {
+  background: var(--surface);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border: 2px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 16px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.filter-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 10px 25px rgba(99, 102, 241, 0.3),
+    0 0 40px rgba(99, 102, 241, 0.2);
+}
+
+.filter-btn.active {
+  background: var(--gradient-cosmic);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 
+    0 10px 30px rgba(99, 102, 241, 0.5),
+    0 0 60px rgba(236, 72, 153, 0.3);
+  transform: scale(1.08);
+  animation: activeGlow 2s ease-in-out infinite;
+}
+
+@keyframes activeGlow {
+  0%, 100% { 
+    box-shadow: 
+      0 10px 30px rgba(99, 102, 241, 0.5),
+      0 0 60px rgba(236, 72, 153, 0.3);
+  }
+  50% { 
+    box-shadow: 
+      0 10px 30px rgba(139, 92, 246, 0.6),
+      0 0 80px rgba(236, 72, 153, 0.5);
+  }
+}
+
+.filter-btn.active:hover {
+  box-shadow: 
+    0 15px 40px rgba(99, 102, 241, 0.6),
+    0 0 80px rgba(236, 72, 153, 0.5);
+}
+
+/* Active filter highlight animation */
+.active-filter-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-neon);
+  border-radius: 14px;
+  opacity: 0.15;
+  z-index: -1;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.02); }
+}
+
+@media (max-width: 768px) {
+  .filter-controls {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem auto 1.5rem;
+  }
+  
+  .filter-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-controls {
+    margin: 1rem auto 1.5rem;
+    padding: 1rem 0.75rem;
+    gap: 0.5rem;
+  }
+  
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}

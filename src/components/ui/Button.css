@@ -1,0 +1,155 @@
+/* src/components/ui/Button.css */
+.modern-button {
+  padding: 0.85rem 2rem;
+  border-radius: 16px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  /* Default: Cosmic gradient */
+  background: var(--gradient-cosmic);
+  color: white;
+  box-shadow: 
+    0 8px 20px rgba(99, 102, 241, 0.4),
+    0 0 30px rgba(236, 72, 153, 0.2);
+  border: 1px solid transparent;
+}
+
+/* Animated gradient background */
+.modern-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.modern-button:hover::before {
+  left: 100%;
+}
+
+/* Ripple effect on click */
+.modern-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.modern-button:active::after {
+  width: 300px;
+  height: 300px;
+  transition: width 0s, height 0s;
+}
+
+.modern-button:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    0 12px 30px rgba(99, 102, 241, 0.6),
+    0 0 50px rgba(236, 72, 153, 0.4);
+  animation: buttonPulse 1s ease-in-out infinite;
+}
+
+@keyframes buttonPulse {
+  0%, 100% { 
+    box-shadow: 
+      0 12px 30px rgba(99, 102, 241, 0.6),
+      0 0 50px rgba(236, 72, 153, 0.4);
+  }
+  50% { 
+    box-shadow: 
+      0 12px 30px rgba(139, 92, 246, 0.7),
+      0 0 60px rgba(236, 72, 153, 0.5);
+  }
+}
+
+.modern-button:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Icon styling */
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.2em;
+  transition: transform 0.3s ease;
+}
+
+.modern-button:hover .button-icon {
+  transform: rotate(15deg) scale(1.1);
+}
+
+/* Secondary variant (outlined) */
+.modern-button.secondary {
+  background: var(--gradient-ocean);
+  box-shadow: 
+    0 8px 20px rgba(6, 182, 212, 0.4),
+    0 0 30px rgba(20, 184, 166, 0.2);
+}
+
+.modern-button.secondary:hover {
+  box-shadow: 
+    0 12px 30px rgba(6, 182, 212, 0.6),
+    0 0 50px rgba(20, 184, 166, 0.4);
+}
+
+/* Accent variant */
+.modern-button.accent {
+  background: var(--gradient-fire);
+  box-shadow: 
+    0 8px 20px rgba(239, 68, 68, 0.4),
+    0 0 30px rgba(249, 115, 22, 0.2);
+}
+
+.modern-button.accent:hover {
+  box-shadow: 
+    0 12px 30px rgba(239, 68, 68, 0.6),
+    0 0 50px rgba(249, 115, 22, 0.4);
+}
+
+/* Disabled state */
+.modern-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+/* Small size */
+.modern-button.small {
+  padding: 0.6rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+/* Large size */
+.modern-button.large {
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+}

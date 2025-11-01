@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import './Card.css'; // <-- ADD THIS IMPORT
 
 export const Card = ({ children, className = '', ...props }) => {
   return (

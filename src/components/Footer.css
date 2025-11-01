@@ -1,3 +1,0 @@
-.site-footer { position:fixed; bottom:0; left:0; right:0; background:var(--card-bg); border-top:1px solid var(--border-color); padding:.6rem; box-shadow: var(--shadow-md); z-index:1000; }
-.footer-content { max-width:1200px; margin:0 auto; display:flex; gap:1rem; align-items:center; justify-content:center; }
-.copyright { animation: glow 3s ease-in-out infinite; }
