@@ -111,7 +111,10 @@ const NewsCard = React.memo(({ item, searchQuery, onQuizClick }) => {
           </div>
           <Button
             className="quiz-btn"
-            onClick={() => onQuizClick(item)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onQuizClick(item);
+            }}
             variant="primary"
           >
             Test Your Knowledge

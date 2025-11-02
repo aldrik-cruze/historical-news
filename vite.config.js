@@ -19,17 +19,7 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace']
-      },
-      format: {
-        comments: false
-      }
-    },
+    minify: 'esbuild', // Use esbuild instead of terser (faster and built-in)
     rollupOptions: {
       output: {
         manualChunks: {
@@ -61,6 +51,8 @@ export default defineConfig({
   // Enable esbuild optimizations
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
-    treeShaking: true
+    treeShaking: true,
+    // Remove console in production
+    drop: ['console', 'debugger']
   }
 })
