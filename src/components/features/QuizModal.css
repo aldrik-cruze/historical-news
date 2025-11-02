@@ -419,116 +419,29 @@
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .quiz-modal-overlay {
-    padding: 1rem;
-    align-items: center;
+    padding: 0.5rem;
+    align-items: flex-start;
+    padding-top: 2rem;
   }
 
   .quiz-modal-content {
     width: 100%;
     max-width: 100%;
-    max-height: 92vh;
+    max-height: calc(100vh - 2.5rem);
+    margin: 0;
   }
 
   .quiz-modal-header {
-    padding: 1.5rem 1.5rem 1rem;
+    padding: 1.25rem 1.25rem 1rem;
   }
 
   .quiz-modal-body {
-    padding: 1.25rem 1.5rem 0.75rem;
+    padding: 1rem 1.25rem 0.75rem;
     min-height: 0;
   }
 
   .quiz-modal-body::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  .quiz-modal-footer {
-    padding: 1rem 1.5rem 1.5rem;
-  }
-
-  .quiz-modal-content h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .quiz-modal-content p {
-    font-size: 0.9rem;
-  }
-
-  .quiz-options {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .quiz-option {
-    padding: 0.85rem;
-    font-size: 0.95rem;
-    border-radius: 14px;
-  }
-
-  .quiz-option:hover {
-    transform: translateY(-2px);
-  }
-
-  .submit-btn,
-  .close-btn {
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    border-radius: 14px;
-  }
-
-  .quiz-question {
-    margin-bottom: 2rem;
-  }
-
-  .quiz-question:last-child {
-    margin-bottom: 0.5rem;
-  }
-
-  .quiz-question p {
-    font-size: 0.9rem;
-  }
-
-  .quiz-options {
-    gap: 0.875rem;
-    margin: 0.875rem 0 0;
-  }
-
-  .quiz-result li {
-    font-size: 0.85rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  /* Disable some animations on mobile for performance */
-  .quiz-modal-content::before {
-    animation: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .quiz-modal-overlay {
-    padding: 0.25rem;
-    padding-top: 1rem;
-  }
-
-  .quiz-modal-content {
-    width: 100%;
-    border-radius: 20px;
-    max-height: 94vh;
-  }
-
-  .quiz-modal-header {
-    padding: 1.25rem 1.25rem 0.75rem;
-  }
-
-  .quiz-modal-body {
-    padding: 1rem 1.25rem 0.5rem;
-    min-height: 0;
-  }
-
-  .quiz-modal-body::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
 
   .quiz-modal-footer {
@@ -536,18 +449,27 @@
   }
 
   .quiz-modal-content h2 {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
   }
 
   .quiz-modal-content p {
     font-size: 0.85rem;
   }
 
+  .quiz-options {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
   .quiz-option {
-    padding: 0.75rem;
+    padding: 0.85rem;
     font-size: 0.9rem;
     border-radius: 12px;
-    min-height: 44px;
+  }
+
+  .quiz-option:hover {
+    transform: none;
   }
 
   .submit-btn,
@@ -555,11 +477,14 @@
     padding: 0.9rem 1.75rem;
     font-size: 0.95rem;
     border-radius: 12px;
-    min-height: 44px;
   }
 
   .quiz-question {
     margin-bottom: 1.75rem;
+  }
+
+  .quiz-question:last-child {
+    margin-bottom: 0.5rem;
   }
 
   .quiz-question p {
@@ -572,13 +497,92 @@
   }
 
   .quiz-result li {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     padding: 0.875rem;
     margin-bottom: 0.875rem;
   }
 
-  .quiz-result h3 {
+  /* Disable some animations on mobile for performance */
+  .quiz-modal-content::before {
+    animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .quiz-modal-overlay {
+    padding: 0.5rem;
+    padding-top: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .quiz-modal-content {
+    width: 100%;
+    border-radius: 16px;
+    max-height: calc(100vh - 2rem);
+    margin: 0;
+  }
+
+  .quiz-modal-header {
+    padding: 1rem 1rem 0.75rem;
+  }
+
+  .quiz-modal-body {
+    padding: 0.875rem 1rem 0.5rem;
+    min-height: 0;
+  }
+
+  .quiz-modal-body::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .quiz-modal-footer {
+    padding: 0.75rem 1rem 1rem;
+  }
+
+  .quiz-modal-content h2 {
     font-size: 1.2rem;
+  }
+
+  .quiz-modal-content p {
+    font-size: 0.8rem;
+  }
+
+  .quiz-option {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    min-height: 44px;
+  }
+
+  .submit-btn,
+  .close-btn {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    min-height: 44px;
+  }
+
+  .quiz-question {
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-question p {
+    font-size: 0.8rem;
+  }
+
+  .quiz-options {
+    gap: 0.65rem;
+    margin: 0.65rem 0 0;
+  }
+
+  .quiz-result li {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quiz-result h3 {
+    font-size: 1.1rem;
   }
 
   /* Simplify hover effects */
@@ -592,7 +596,7 @@
 
   .submit-btn:hover,
   .close-btn:hover {
-    transform: translateY(-1px);
+    transform: none;
   }
 }
 
