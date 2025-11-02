@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import './FilterControls.css';
 
@@ -9,7 +9,11 @@ const filters = [
   { id: 'death', label: 'Deaths' },
 ];
 
-export const FilterControls = ({ activeFilter, onFilterChange, isSearchActive }) => {
+export const FilterControls = React.memo(({ activeFilter, onFilterChange, isSearchActive }) => {
+  const handleFilterClick = useCallback((filterId) => {
+    onFilterChange(filterId);
+  }, [onFilterChange]);
+
   return (
     <nav className="filter-controls">
       {isSearchActive && (
@@ -21,7 +25,7 @@ export const FilterControls = ({ activeFilter, onFilterChange, isSearchActive })
         <motion.button
           key={filter.id}
           className={`filter-btn ${activeFilter === filter.id ? 'active' : ''}`}
-          onClick={() => onFilterChange(filter.id)}
+          onClick={() => handleFilterClick(filter.id)}
 
           // Add layout prop for smooth re-positioning
           layout
@@ -47,4 +51,6 @@ export const FilterControls = ({ activeFilter, onFilterChange, isSearchActive })
       ))}
     </nav>
   );
-};
+});
+
+FilterControls.displayName = 'FilterControls';

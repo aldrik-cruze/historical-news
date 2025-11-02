@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/layout/Header';
 import { NewsFeed } from './components/features/NewsFeed';
 import { Footer } from './components/layout/Footer';
@@ -41,28 +41,28 @@ export function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
+  }, []);
 
-  const handleDateChange = (newDate) => {
+  const handleDateChange = useCallback((newDate) => {
     setDate(newDate);
     setSearchQuery(''); // Clear search when date changes
     setYearRange({ from: '', to: '' }); // Clear year range
-  };
+  }, []);
 
-  const handleSearch = (query) => {
+  const handleSearch = useCallback((query) => {
     setSearchQuery(query);
-  };
+  }, []);
 
-  const handleYearChange = (range) => {
+  const handleYearChange = useCallback((range) => {
     setYearRange(range);
     setSearchQuery(''); // Clear search when year range changes
-  };
+  }, []);
 
-  const handleFilterChange = (filter) => {
+  const handleFilterChange = useCallback((filter) => {
     setActiveFilter(filter);
-  };
+  }, []);
 
   return (
     <div className="app">

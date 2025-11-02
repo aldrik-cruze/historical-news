@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button } from '../ui/Button';
 import { Select } from '../ui/Select';
 import './Controls.css';
@@ -12,24 +12,24 @@ const months = [
 
 const days = Array.from({ length: 31 }, (_, i) => ({ value: i + 1, label: String(i + 1) }));
 
-export const Controls = ({ onDateChange, onYearRange, onSearch, theme }) => {
+export const Controls = React.memo(({ onDateChange, onYearRange, onSearch, theme }) => {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [day, setDay] = useState(new Date().getDate());
   const [fromYear, setFromYear] = useState('');
   const [toYear, setToYear] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleDateSubmit = () => {
+  const handleDateSubmit = useCallback(() => {
     // Submit both date and year range together
     onDateChange({ month: parseInt(month), day: parseInt(day) });
     onYearRange({ from: fromYear, to: toYear });
     setSearchQuery(''); // Clear search when filtering
-  };
+  }, [month, day, fromYear, toYear, onDateChange, onYearRange]);
 
-  const handleSearch = (e) => {
+  const handleSearch = useCallback((e) => {
     e.preventDefault();
     onSearch(searchQuery);
-  };
+  }, [searchQuery, onSearch]);
 
   return (
     <div className="controls-wrapper">
@@ -69,4 +69,6 @@ export const Controls = ({ onDateChange, onYearRange, onSearch, theme }) => {
       </div>
     </div>
   );
-};
+});
+
+Controls.displayName = 'Controls';

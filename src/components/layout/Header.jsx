@@ -8,17 +8,26 @@ export const Header = ({ onDateChange, onSearch, onYearChange, onToggleTheme, th
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Hide header when scrolling down, show when scrolling up
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsHidden(true);
-      } else {
-        setIsHidden(false);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          
+          // Only show header when at the very top, hide when scrolling down
+          if (currentScrollY <= 50) {
+            setIsHidden(false);
+          } else {
+            setIsHidden(true);
+          }
+          
+          setLastScrollY(currentScrollY);
+          ticking = false;
+        });
+        
+        ticking = true;
       }
-      
-      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });

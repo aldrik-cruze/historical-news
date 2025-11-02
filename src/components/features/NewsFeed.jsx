@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { QuizModal } from './QuizModal';
 import { Button } from '../ui/Button';
@@ -6,8 +6,8 @@ import './NewsFeed.css';
 
 const ITEMS_PER_PAGE = 12;
 
-// Create a separate Card component to hold its own animation logic
-function NewsCard({ item, searchQuery, onQuizClick }) {
+// Memoized Card component for better performance
+const NewsCard = React.memo(({ item, searchQuery, onQuizClick }) => {
   // 1. Hooks for 3D hover effect
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -20,27 +20,30 @@ function NewsCard({ item, searchQuery, onQuizClick }) {
   const glowX = useTransform(mouseX, [-200, 200], ["-100%", "100%"]);
   const glowY = useTransform(mouseY, [-200, 200], ["-100%", "100%"]);
 
-  function handleMouseMove({ currentTarget, clientX, clientY }) {
-    const rect = currentTarget.getBoundingClientRect();
-    // Calculate mouse position relative to the card center
-    mouseX.set(clientX - rect.left - rect.width / 2);
-    mouseY.set(clientY - rect.top - rect.height / 2);
-  }
+  const handleMouseMove = useCallback(({ currentTarget, clientX, clientY }) => {
+    // Use requestAnimationFrame for smoother mouse tracking
+    requestAnimationFrame(() => {
+      const rect = currentTarget.getBoundingClientRect();
+      // Calculate mouse position relative to the card center
+      mouseX.set(clientX - rect.left - rect.width / 2);
+      mouseY.set(clientY - rect.top - rect.height / 2);
+    });
+  }, [mouseX, mouseY]);
 
-  function handleMouseLeave() {
+  const handleMouseLeave = useCallback(() => {
     // Reset to center
     mouseX.set(0);
     mouseY.set(0);
-  }
+  }, [mouseX, mouseY]);
 
-  const calculateReadingTime = (text) => {
+  const calculateReadingTime = useCallback((text) => {
     const wordsPerMinute = 200;
     const words = text.split(' ').length;
     const minutes = Math.ceil(words / wordsPerMinute);
     return `${minutes} min read`;
-  };
+  }, []);
 
-  const getHighlightedText = (text, highlight) => {
+  const getHighlightedText = useCallback((text, highlight) => {
     if (!highlight) return <span>{text}</span>;
     const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
     return <span> { parts.map((part, i) =>
@@ -48,10 +51,10 @@ function NewsCard({ item, searchQuery, onQuizClick }) {
             { part }
         </span>)
     } </span>;
-  }
+  }, []);
 
   // Card animation: fade in and slide up when scrolled into view
-  const cardVariants = {
+  const cardVariants = useMemo(() => ({
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
@@ -59,10 +62,12 @@ function NewsCard({ item, searchQuery, onQuizClick }) {
       transition: {
         type: "spring",
         stiffness: 100,
-        damping: 14
+        damping: 14,
+        // Reduce animation on mobile for better performance
+        duration: window.innerWidth < 768 ? 0.3 : 0.5
       }
     }
-  };
+  }), []);
 
   return (
     <motion.div
@@ -85,12 +90,14 @@ function NewsCard({ item, searchQuery, onQuizClick }) {
       onMouseLeave={handleMouseLeave}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <img
-        src={item.pages?.[0]?.thumbnail?.source || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23f3f4f6"/%3E%3Ctext x="50" y="50" font-family="Arial" font-size="12" fill="%23666" text-anchor="middle" dy=".3em"%3ENo Image%3C/text%3E%3C/svg%3E'}
-        alt="Event Image"
-        className="card-image"
-        loading="lazy"
-      />
+      <div className="card-image-wrapper">
+        <img
+          src={item.pages?.[0]?.thumbnail?.source || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23f3f4f6"/%3E%3Ctext x="50" y="50" font-family="Arial" font-size="12" fill="%23666" text-anchor="middle" dy=".3em"%3ENo Image%3C/text%3E%3C/svg%3E'}
+          alt="Event Image"
+          className="card-image"
+          loading="lazy"
+        />
+      </div>
       <div className="card-content">
         <div className="card-header">
           <span className={`category-tag tag-${item.type || 'event'}`}>{item.type || 'Event'}</span>
@@ -122,7 +129,9 @@ function NewsCard({ item, searchQuery, onQuizClick }) {
       />
     </motion.div>
   );
-}
+});
+
+NewsCard.displayName = 'NewsCard';
 
 
 export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
@@ -134,6 +143,8 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
   const cache = useRef(new Map());
   const loadMoreRef = useRef(null);
   const [isSearching, setIsSearching] = useState(false);
+
+
 
   // Function to fetch data for a specific date
   const fetchDateData = async (month, day) => {
@@ -161,10 +172,11 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
     return [];
   };
 
-  // Fetch data when search query changes - use Wikipedia search API
+  // Fetch data when search query changes - use Wikipedia search API with debouncing
   useEffect(() => {
     if (searchQuery && searchQuery.trim()) {
-      const performSearch = async () => {
+      // Debounce search to avoid too many API calls
+      const timeoutId = setTimeout(async () => {
         setIsSearching(true);
         setLoading(true);
         
@@ -213,40 +225,16 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
             setNews(uniqueResults);
           } else {
             // Fallback to the old method if API fails
-            await fallbackSearch();
+            console.error('Search API failed');
           }
         } catch (error) {
           console.error('Search failed:', error);
-          await fallbackSearch();
         }
         
         setVisibleCount(ITEMS_PER_PAGE);
         setLoading(false);
         setIsSearching(false);
-      };
-      
-      // Fallback search method
-      const fallbackSearch = async () => {
-        const allResults = [];
-        const today = new Date();
-        
-        // Search through entire year (sample every 7 days)
-        const daysToFetch = [];
-        for (let month = 1; month <= 12; month++) {
-          const daysInMonth = new Date(today.getFullYear(), month, 0).getDate();
-          for (let day = 1; day <= daysInMonth; day += 7) {
-            daysToFetch.push({ month, day });
-          }
-        }
-
-        for (const { month, day } of daysToFetch) {
-          const data = await fetchDateData(month, day);
-          allResults.push(...data);
-          await new Promise(resolve => setTimeout(resolve, 50));
-        }
-
-        setNews(allResults);
-      };
+      }, 300); // 300ms debounce delay
       
       // Helper function to extract year from snippet
       const extractYearFromSnippet = (snippet) => {
@@ -254,32 +242,28 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
         return yearMatch ? parseInt(yearMatch[0]) : null;
       };
 
-      performSearch();
+      return () => clearTimeout(timeoutId);
     }
   }, [searchQuery]);
 
   // Fetch data for specific date when not searching
   useEffect(() => {
-    if (searchQuery && searchQuery.trim()) {
-      // Skip normal date fetch when searching
-      return;
+    if (!searchQuery || !searchQuery.trim()) {
+      const fetchHistoricalData = async (month, day) => {
+        if (!month || !day) return;
+        
+        setLoading(true);
+        const data = await fetchDateData(month, day);
+        setNews(data);
+        setVisibleCount(ITEMS_PER_PAGE);
+        setLoading(false);
+      };
+
+      const today = new Date();
+      const effectiveMonth = date.month || (today.getMonth() + 1);
+      const effectiveDay = date.day || today.getDate();
+      fetchHistoricalData(effectiveMonth, effectiveDay);
     }
-
-    const fetchHistoricalData = async (month, day) => {
-      if (!month || !day) return;
-      
-      setLoading(true);
-      const data = await fetchDateData(month, day);
-      setNews(data);
-      setVisibleCount(ITEMS_PER_PAGE);
-      setLoading(false);
-    };
-
-    const today = new Date();
-    const effectiveMonth = date.month || (today.getMonth() + 1);
-    const effectiveDay = date.day || today.getDate();
-    fetchHistoricalData(effectiveMonth, effectiveDay);
-
   }, [date, searchQuery]);
 
   const fullFilteredNews = useMemo(() => {
