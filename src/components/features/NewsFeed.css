@@ -7,8 +7,10 @@
   position: relative;
   z-index: 1;
   /* Content visibility for better performance */
-  contain: layout style paint;
+  contain: layout style;
   content-visibility: auto;
+  /* Optimize rendering */
+  isolation: isolate;
 }
 
 /* 1. Ultra-Modern Card Styles with Glass Morphism */
@@ -33,6 +35,9 @@
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  /* Optimize rendering */
+  contain: layout style paint;
+  content-visibility: auto;
 }
 
 body.dark-theme .news-card {
@@ -62,6 +67,9 @@ body.dark-theme .news-card {
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: -1;
+  /* Optimize GPU usage */
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 .news-card:hover::before {
@@ -72,6 +80,13 @@ body.dark-theme .news-card {
 @keyframes borderRotate {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(360deg); }
+}
+
+/* Disable heavy animations on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  .news-card::before {
+    animation: none !important;
+  }
 }
 
 /* 2. Enhanced Mouse-Following Glow Effect */
@@ -93,6 +108,9 @@ body.dark-theme .news-card {
   transition: opacity 0.3s ease;
   transform: translateZ(0);
   pointer-events: none;
+  /* Optimize for performance */
+  will-change: opacity;
+  contain: layout style paint;
 }
 
 .news-card:hover .card-glow {
@@ -120,7 +138,7 @@ body.dark-theme .card-glow {
   /* GPU acceleration */
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
-  will-change: transform;
+  contain: layout style paint;
 }
 
 .card-image {
@@ -130,7 +148,10 @@ body.dark-theme .card-glow {
   display: block;
   transition: transform 0.4s ease, filter 0.4s ease;
   /* Performance optimization */
-  will-change: transform, filter;
+  will-change: transform;
+  /* Enable image decoding optimization */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .news-card:hover .card-image {

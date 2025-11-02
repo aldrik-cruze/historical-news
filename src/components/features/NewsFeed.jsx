@@ -309,10 +309,20 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCount(prevCount => prevCount + ITEMS_PER_PAGE);
+          // Use requestIdleCallback for better performance
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(() => {
+              setVisibleCount(prevCount => prevCount + ITEMS_PER_PAGE);
+            });
+          } else {
+            setVisibleCount(prevCount => prevCount + ITEMS_PER_PAGE);
+          }
         }
       },
-      { rootMargin: "0px 0px 400px 0px" }
+      { 
+        rootMargin: "0px 0px 400px 0px",
+        threshold: 0.01
+      }
     );
 
     const currentRef = loadMoreRef.current;

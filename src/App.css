@@ -1,7 +1,7 @@
 /* src/App.css */
 
-/* 1. Import new, modern fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600&display=swap');
+/* 1. Import new, modern fonts - preload for performance */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@400;600&display=swap&text=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
 
 /* 2. Define New Light Mode Color Palette */
 :root {
@@ -121,12 +121,14 @@ body.dark-theme {
 
 html {
   scroll-behavior: smooth;
-  /* Improve text rendering on mobile */
-  text-rendering: optimizeLegibility;
+  /* Improve text rendering */
+  text-rendering: optimizeSpeed;
   -webkit-text-size-adjust: 100%;
-  /* GPU acceleration for smoother animations */
+  /* Font smoothing */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent bounce scroll on iOS */
+  overscroll-behavior-y: none;
 }
 
 body {

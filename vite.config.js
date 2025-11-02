@@ -41,7 +41,10 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    open: true
+    open: true,
+    hmr: {
+      overlay: true
+    }
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'framer-motion'],
@@ -53,6 +56,11 @@ export default defineConfig({
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
     treeShaking: true,
     // Remove console in production
-    drop: ['console', 'debugger']
+    drop: ['console', 'debugger'],
+    // Optimize for performance
+    legalComments: 'none',
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true
   }
 })
