@@ -1,16 +1,8 @@
-# Vercel Configuration for Historical News
-
-# Build settings
-[build]
-  command = "npm run build:vercel"
-  publish = "dist"
-
-# Environment variables
-[build.environment]
-  NODE_VERSION = "18"
-
-# SPA routing - redirect all routes to index.html
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
