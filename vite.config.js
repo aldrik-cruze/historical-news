@@ -10,7 +10,10 @@ export default defineConfig({
       // Optimize bundle
       babel: {
         compact: true,
-        minified: true
+        plugins: [
+          // Remove prop-types in production for smaller bundle
+          ['babel-plugin-transform-react-remove-prop-types', { removeImport: true }]
+        ]
       }
     })
   ],
@@ -20,6 +23,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'esbuild', // Use esbuild instead of terser (faster and built-in)
+    target: 'es2015', // Support modern browsers for smaller bundle
     rollupOptions: {
       output: {
         manualChunks: {
@@ -33,7 +37,8 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 1000,
     cssCodeSplit: true,
-    reportCompressedSize: false,
+    cssMinify: true,
+    reportCompressedSize: false, // Faster builds
     // Enable module preload for faster loading
     modulePreload: {
       polyfill: true
@@ -48,19 +53,19 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'framer-motion'],
-    // Force pre-bundling
-    force: true
+    exclude: []
   },
   // Enable esbuild optimizations
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
     treeShaking: true,
-    // Only remove console.log in production, keep warn and error
-    drop: process.env.NODE_ENV === 'production' ? ['debugger'] : [],
+    // Remove console.log, debugger in production
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
     // Optimize for performance
     legalComments: 'none',
     minifyIdentifiers: true,
     minifySyntax: true,
-    minifyWhitespace: true
+    minifyWhitespace: true,
+    target: 'es2015'
   }
 })

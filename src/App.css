@@ -121,14 +121,19 @@ body.dark-theme {
 
 html {
   scroll-behavior: smooth;
+  /* Improve performance with CSS containment */
+  contain: layout style;
   /* Improve text rendering */
-  text-rendering: optimizeSpeed;
+  text-rendering: optimizeLegibility;
   -webkit-text-size-adjust: 100%;
   /* Font smoothing */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Prevent bounce scroll on iOS */
   overscroll-behavior-y: none;
+  /* Enable hardware acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 body {
@@ -148,6 +153,10 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+  /* Enable GPU acceleration */
+  will-change: scroll-position;
+  /* Smooth scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Improve scrolling on iOS */

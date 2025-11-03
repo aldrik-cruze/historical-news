@@ -10,10 +10,8 @@ if (!root) {
   console.error('Root element not found!');
 } else {
   ReactDOM.createRoot(root).render(
-    <React.StrictMode>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </React.StrictMode>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   );
 }

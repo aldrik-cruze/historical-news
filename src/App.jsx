@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Header } from './components/layout/Header';
 import { NewsFeed } from './components/features/NewsFeed';
 import { Footer } from './components/layout/Footer';
@@ -36,11 +36,13 @@ export function App() {
     return localStorage.getItem('theme') || 'light';
   });
 
+  // Apply theme changes
   useEffect(() => {
     document.body.className = theme === 'dark' ? 'dark-theme' : '';
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  // Memoize callbacks to prevent unnecessary re-renders
   const toggleTheme = useCallback(() => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   }, []);
@@ -64,6 +66,9 @@ export function App() {
     setActiveFilter(filter);
   }, []);
 
+  // Memoize isSearchActive check
+  const isSearchActive = useMemo(() => !!searchQuery, [searchQuery]);
+
   return (
     <div className="app">
       <ExtraFeatures />
@@ -78,7 +83,7 @@ export function App() {
         <FilterControls
           activeFilter={activeFilter}
           onFilterChange={handleFilterChange}
-          isSearchActive={!!searchQuery}
+          isSearchActive={isSearchActive}
         />
         <NewsFeed
           searchQuery={searchQuery}

@@ -106,77 +106,6 @@ const NewsCard = React.memo(({ item, searchQuery, onQuizClick }) => {
           decoding="async"
         />
       </div>
-  }, [mouseX, mouseY]);
-
-  const handleMouseLeave = useCallback(() => {
-    // Reset to center
-    mouseX.set(0);
-    mouseY.set(0);
-  }, [mouseX, mouseY]);
-
-  const calculateReadingTime = useCallback((text) => {
-    const wordsPerMinute = 200;
-    const words = text.split(' ').length;
-    const minutes = Math.ceil(words / wordsPerMinute);
-    return `${minutes} min read`;
-  }, []);
-
-  const getHighlightedText = useCallback((text, highlight) => {
-    if (!highlight) return <span>{text}</span>;
-    const parts = text.split(new RegExp(`(${highlight})`, 'gi'));
-    return <span> { parts.map((part, i) =>
-        <span key={i} style={part.toLowerCase() === highlight.toLowerCase() ? { fontWeight: 'bold', backgroundColor: 'var(--accent-light)' } : {} }>
-            { part }
-        </span>)
-    } </span>;
-  }, []);
-
-  // Card animation: fade in and slide up when scrolled into view
-  const cardVariants = useMemo(() => ({
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: IS_MOBILE ? 150 : 100,
-        damping: IS_MOBILE ? 20 : 14,
-        // Reduce animation duration on mobile for better performance
-        duration: IS_MOBILE ? 0.2 : 0.5
-      }
-    }
-  }), []);
-
-  return (
-    <motion.div
-      className="news-card formal-font"
-      key={`${item.year}-${item.text.slice(0, 20)}`}
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="visible" // Animate when it scrolls into view
-      viewport={{ once: true, amount: IS_MOBILE ? 0.1 : 0.3 }} // Trigger earlier on mobile
-      layout={!IS_MOBILE && "position"} // Disable layout animations on mobile
-      exit={{ opacity: 0, y: 20, transition: { duration: 0.2 } }}
-
-      // 4. Apply 3D hover logic (only on desktop)
-      style={IS_MOBILE ? {} : {
-        perspective: 800, // Apply perspective for 3D
-        rotateX, // Apply transforms from hooks
-        rotateY
-      }}
-      onMouseMove={!IS_MOBILE ? handleMouseMove : undefined}
-      onMouseLeave={!IS_MOBILE ? handleMouseLeave : undefined}
-      transition={!IS_MOBILE ? { type: "spring", stiffness: 300, damping: 20 } : undefined}
-    >
-      <div className="card-image-wrapper">
-        <img
-          src={item.pages?.[0]?.thumbnail?.source || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect width="100" height="100" fill="%23f3f4f6"/%3E%3Ctext x="50" y="50" font-family="Arial" font-size="12" fill="%23666" text-anchor="middle" dy=".3em"%3ENo Image%3C/text%3E%3C/svg%3E'}
-          alt="Event Image"
-          className="card-image"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
       <div className="card-content">
         <div className="card-header">
           <span className={`category-tag tag-${item.type || 'event'}`}>{item.type || 'Event'}</span>
@@ -354,7 +283,6 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
         }
       };
     }
-  }, [searchQuery]);
   }, [searchQuery]);
 
   // Fetch data for specific date when not searching
