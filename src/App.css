@@ -463,9 +463,6 @@ button:focus-visible {
 /* Modal scroll lock */
 body.modal-open {
   overflow: hidden !important;
-  position: fixed !important;
-  width: 100% !important;
-  height: 100vh !important;
 }
 
 /* 12. Smooth transitions for theme switching */

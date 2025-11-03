@@ -9,12 +9,13 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center;        /* Vertical centering */
+  justify-content: center;    /* Horizontal centering */
   z-index: 9999;
   animation: fadeIn 0.3s ease;
-  padding: 1.5rem;
+  padding: 2rem 1.5rem;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 @keyframes fadeIn {
@@ -30,7 +31,7 @@
   border-radius: 24px;
   width: 90%;
   max-width: 650px;
-  max-height: calc(100vh - 3rem);
+  max-height: calc(100vh - 4rem);
   box-shadow: var(--shadow-xl), 0 0 80px rgba(99, 102, 241, 0.3);
   border: 2px solid var(--border-color);
   position: relative;
@@ -39,15 +40,16 @@
   animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 10000;
   overflow: hidden;
-  margin: auto;
+  /* Fixed centered position - never changes */
+  margin: 0;
 }
 
 @keyframes slideDown {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(-30px) scale(0.95);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
@@ -92,7 +94,13 @@
   overflow-x: hidden;
   padding: 1.25rem 2rem 1rem;
   margin: 0;
+  
+  /* THIS IS THE CRITICAL FIX: 
+    These properties force the flex-item to be aware of its boundaries
+    and allow its content to scroll.
+  */
   min-height: 0;
+  height: 100%; 
   
   /* Smooth scrolling */
   scroll-behavior: smooth;
@@ -259,7 +267,6 @@
   transform: translateY(-3px);
   box-shadow: 0 12px 32px rgba(99, 102, 241, 0.5);
 }
-}
 
 .submit-btn:disabled {
   background: var(--border-color);
@@ -341,7 +348,6 @@
 .quiz-questions-container {
   padding: 0;
   margin: 0;
-  min-height: min-content;
 }
 
 .quiz-question {
@@ -419,16 +425,16 @@
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .quiz-modal-overlay {
-    padding: 0.5rem;
-    align-items: flex-start;
-    padding-top: 2rem;
+    padding: 1rem;
+    align-items: center;      /* Keep centered vertically */
+    justify-content: center;  /* Keep centered horizontally */
   }
 
   .quiz-modal-content {
-    width: 100%;
+    width: 95%;
     max-width: 100%;
-    max-height: calc(100vh - 2.5rem);
-    margin: 0;
+    max-height: calc(100vh - 2rem);
+    margin: 0;  /* Fixed position - no auto margins */
   }
 
   .quiz-modal-header {
@@ -510,16 +516,16 @@
 
 @media (max-width: 480px) {
   .quiz-modal-overlay {
-    padding: 0.5rem;
-    padding-top: 1.5rem;
-    align-items: flex-start;
+    padding: 0.75rem;
+    align-items: center;      /* Keep centered vertically */
+    justify-content: center;  /* Keep centered horizontally */
   }
 
   .quiz-modal-content {
-    width: 100%;
+    width: 95%;
     border-radius: 16px;
-    max-height: calc(100vh - 2rem);
-    margin: 0;
+    max-height: calc(100vh - 1.5rem);
+    margin: 0;  /* Fixed position - no auto margins */
   }
 
   .quiz-modal-header {
