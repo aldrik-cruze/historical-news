@@ -4,361 +4,127 @@ import './QuizModal.css';
 
 const generateQuestions = (event) => {
   const questions = [];
-  const eventText = event.text || '';
-  const eventYear = event.year;
-  
-  // Extract key information from the event text
-  const words = eventText.split(' ');
-  const hasNumbers = /\d+/.test(eventText);
-  const hasNames = /[A-Z][a-z]+ [A-Z][a-z]+/.test(eventText);
-  
-  // Question 1: Main event content - Fill in the blank
-  const blankQuestion = createFillInBlankQuestion(eventText, eventYear);
-  if (blankQuestion) questions.push(blankQuestion);
-  
-  // Question 2: Specific year
+
+  // Question 1: Exact Year
   questions.push({
-    question: `In which year did this event occur: "${eventText.substring(0, 60)}${eventText.length > 60 ? '...' : ''}"?`,
-    correctAnswer: eventYear,
-    options: generateYearOptions(eventYear)
+    question: `In which year did the event "${event.text}" occur?`,
+    correctAnswer: event.year.toString(),
+    options: [
+      event.year,
+      event.year - Math.floor(Math.random() * 10 + 1),
+      event.year + Math.floor(Math.random() * 10 + 1),
+      event.year - Math.floor(Math.random() * 20 + 11)
+    ].map(y => y.toString()).sort(() => Math.random() - 0.5),
+    difficulty: 'medium'
   });
-  
-  // Question 3: Who/What/Where question based on content
-  const whoWhatQuestion = createWhoWhatWhereQuestion(eventText, event);
-  if (whoWhatQuestion) questions.push(whoWhatQuestion);
-  
-  // Question 4: Event impact or consequence
-  const impactQuestion = createImpactQuestion(eventText, eventYear, event);
-  if (impactQuestion) questions.push(impactQuestion);
-  
-  // Question 5: Key details from the text
-  const detailQuestion = createDetailQuestion(eventText, event);
-  if (detailQuestion) questions.push(detailQuestion);
-  
-  // Question 6: Historical significance
-  const significanceQuestion = createSignificanceQuestion(eventText, eventYear);
-  if (significanceQuestion) questions.push(significanceQuestion);
 
-  return questions.slice(0, 5); // Return 5 best questions
-};
+  // Question 2: Type Classification
+  if (event.type) {
+    questions.push({
+      question: `What category does "${event.text}" belong to?`,
+      correctAnswer: event.type.charAt(0).toUpperCase() + event.type.slice(1),
+      options: ['Event', 'Birth', 'Death'].sort(() => Math.random() - 0.5),
+      difficulty: 'easy'
+    });
+  }
 
-// Helper: Create fill-in-the-blank question
-const createFillInBlankQuestion = (text, year) => {
-  const words = text.split(' ');
-  if (words.length < 5) return null;
-  
-  // Find a meaningful word to blank out (not common words)
-  const commonWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'];
-  const meaningfulWords = words.filter(w => 
-    w.length > 4 && 
-    !commonWords.includes(w.toLowerCase()) &&
-    /^[A-Za-z]+$/.test(w)
-  );
-  
-  if (meaningfulWords.length === 0) return null;
-  
-  const targetWord = meaningfulWords[Math.floor(Math.random() * Math.min(3, meaningfulWords.length))];
-  const blankText = text.replace(targetWord, '_____');
-  
-  // Generate wrong options
-  const wrongOptions = generateSimilarWords(targetWord);
-  
-  return {
-    question: `Fill in the blank: "${blankText}"`,
-    correctAnswer: targetWord,
-    options: [targetWord, ...wrongOptions].sort(() => Math.random() - 0.5)
+  // Question 3: Century
+  const century = Math.floor(event.year / 100) + 1;
+  const centurySuffix = (num) => {
+    if (num === 1) return '1st';
+    if (num === 2) return '2nd';
+    if (num === 3) return '3rd';
+    return `${num}th`;
   };
-};
-
-// Helper: Generate year options
-const generateYearOptions = (correctYear) => {
-  const options = [correctYear];
-  const offsets = [-1, 1, -5, 5, -10, 10, -50, 50];
-  
-  while (options.length < 4) {
-    const offset = offsets[Math.floor(Math.random() * offsets.length)];
-    const wrongYear = correctYear + offset;
-    if (!options.includes(wrongYear) && wrongYear > 0 && wrongYear <= new Date().getFullYear()) {
-      options.push(wrongYear);
-    }
-  }
-  
-  return options.sort(() => Math.random() - 0.5);
-};
-
-// Helper: Generate similar words for distractors
-const generateSimilarWords = (word) => {
-  const words = [
-    'established', 'founded', 'created', 'formed', 'launched', 'started',
-    'discovered', 'invented', 'developed', 'introduced', 'announced',
-    'completed', 'finished', 'ended', 'concluded', 'terminated',
-    'began', 'commenced', 'initiated', 'opened', 'started',
-    'signed', 'ratified', 'approved', 'adopted', 'enacted'
-  ];
-  
-  const filtered = words.filter(w => w !== word.toLowerCase());
-  return filtered.sort(() => Math.random() - 0.5).slice(0, 3);
-};
-
-// Helper: Create Who/What/Where question
-const createWhoWhatWhereQuestion = (text, event) => {
-  const textLower = text.toLowerCase();
-  
-  // Try to extract a country/place name
-  const places = ['United States', 'America', 'Britain', 'England', 'France', 'Germany', 'Russia', 'China', 'Japan', 'India', 'Italy', 'Spain', 'Mexico', 'Brazil', 'Canada', 'Australia'];
-  const foundPlace = places.find(place => text.includes(place));
-  
-  if (foundPlace) {
-    return {
-      question: `Which country or region was primarily involved in this event?`,
-      correctAnswer: foundPlace,
-      options: [foundPlace, 'France', 'Germany', 'United States'].filter((v, i, a) => a.indexOf(v) === i).slice(0, 4).sort(() => Math.random() - 0.5)
-    };
-  }
-  
-  // Try to extract what happened (action verbs)
-  if (textLower.match(/signed|treaty|agreement|accord/)) {
-    return {
-      question: `What type of action occurred in this event?`,
-      correctAnswer: 'A treaty or agreement was signed',
-      options: ['A treaty or agreement was signed', 'A battle was fought', 'A discovery was made', 'A building was constructed'].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.match(/battle|war|fought|attack|invasion/)) {
-    return {
-      question: `What type of action occurred in this event?`,
-      correctAnswer: 'A military conflict took place',
-      options: ['A military conflict took place', 'A peace treaty was signed', 'A scientific discovery was made', 'An artistic work was created'].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.match(/discover|invent|create|develop|patent/)) {
-    return {
-      question: `What type of action occurred in this event?`,
-      correctAnswer: 'An invention or discovery was made',
-      options: ['An invention or discovery was made', 'A war began', 'A treaty was signed', 'A leader was elected'].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.match(/born|birth/)) {
-    return {
-      question: `What type of event is this?`,
-      correctAnswer: 'Birth of a notable person',
-      options: ['Birth of a notable person', 'Death of a leader', 'Start of a war', 'Signing of a treaty'].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.match(/died|death|pass/)) {
-    return {
-      question: `What type of event is this?`,
-      correctAnswer: 'Death of a notable person',
-      options: ['Death of a notable person', 'Birth of a leader', 'Discovery of new land', 'Invention of technology'].sort(() => Math.random() - 0.5)
-    };
-  }
-  
-  // Default: Ask about what was established/founded
-  if (textLower.match(/found|establish|create|form/)) {
-    return {
-      question: `What happened in this event?`,
-      correctAnswer: 'Something was founded or established',
-      options: ['Something was founded or established', 'Something was destroyed', 'Someone was born', 'A war ended'].sort(() => Math.random() - 0.5)
-    };
-  }
-  
-  return null;
-};
-
-// Helper: Create impact/consequence question
-const createImpactQuestion = (text, year, event) => {
-  const textLower = text.toLowerCase();
-  
-  // Analyze based on keywords for historical impact
-  if (textLower.match(/first|pioneer|initial|debut|inaugural/)) {
-    return {
-      question: `What was the long-term significance of this event?`,
-      correctAnswer: 'It set a precedent for future events',
-      options: [
-        'It set a precedent for future events',
-        'It ended an existing tradition',
-        'It had minimal historical impact',
-        'It was quickly forgotten'
-      ].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.match(/revolution|uprising|revolt|independence/)) {
-    return {
-      question: `How did this event likely affect society?`,
-      correctAnswer: 'It brought major political change',
-      options: [
-        'It brought major political change',
-        'It had no lasting effect',
-        'It only affected the arts',
-        'It was purely economic'
-      ].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.match(/invent|discover|breakthrough|advancement/)) {
-    return {
-      question: `What was the primary impact of this event?`,
-      correctAnswer: 'Advancement in science or technology',
-      options: [
-        'Advancement in science or technology',
-        'Political reformation',
-        'Military conquest',
-        'Religious conversion'
-      ].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.match(/treaty|peace|alliance|agreement/)) {
-    return {
-      question: `What was the intended outcome of this event?`,
-      correctAnswer: 'To establish peace or cooperation',
-      options: [
-        'To establish peace or cooperation',
-        'To start a conflict',
-        'To make a scientific discovery',
-        'To create art'
-      ].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.match(/law|constitution|legislation|act\s/)) {
-    return {
-      question: `What area did this event primarily affect?`,
-      correctAnswer: 'Legal and governmental systems',
-      options: [
-        'Legal and governmental systems',
-        'Sports and entertainment',
-        'Natural environment only',
-        'Fashion and trends'
-      ].sort(() => Math.random() - 0.5)
-    };
-  }
-  
-  // Default: Based on event type
-  if (event.type === 'birth') {
-    return {
-      question: `Why might this person's birth be historically significant?`,
-      correctAnswer: 'They likely made important contributions later in life',
-      options: [
-        'They likely made important contributions later in life',
-        'They were born in an unusual location',
-        'Their birth had no significance',
-        'They were the first person ever born'
-      ].sort(() => Math.random() - 0.5)
-    };
-  } else if (event.type === 'death') {
-    return {
-      question: `Why is this person's death recorded in history?`,
-      correctAnswer: 'They had significant impact during their lifetime',
-      options: [
-        'They had significant impact during their lifetime',
-        'They lived longer than anyone else',
-        'It was the first death ever recorded',
-        'Their death had no historical importance'
-      ].sort(() => Math.random() - 0.5)
-    };
-  }
-  
-  // Final default
-  return {
-    question: `In what way did this event influence history?`,
-    correctAnswer: 'It contributed to the development of its time period',
+  questions.push({
+    question: `In which century did "${event.text}" take place?`,
+    correctAnswer: `${centurySuffix(century)} century`,
     options: [
-      'It contributed to the development of its time period',
-      'It had no influence on history',
-      'It only affected one person',
-      'It was completely forgotten'
-    ].sort(() => Math.random() - 0.5)
-  };
-};
+      `${centurySuffix(century)} century`,
+      `${centurySuffix(century - 1)} century`,
+      `${centurySuffix(century + 1)} century`,
+      `${centurySuffix(century - 2)} century`,
+    ].sort(() => Math.random() - 0.5),
+    difficulty: 'medium'
+  });
 
-// Helper: Create detail question
-const createDetailQuestion = (text, event) => {
-  // Extract potential names from text
-  const nameMatch = text.match(/([A-Z][a-z]+ [A-Z][a-z]+)/);
-  if (nameMatch) {
-    const name = nameMatch[0];
-    return {
-      question: `Who was involved in this event?`,
-      correctAnswer: name,
-      options: [name, 'Abraham Lincoln', 'Albert Einstein', 'Winston Churchill'].sort(() => Math.random() - 0.5)
-    };
-  }
-  
-  // Extract numbers
-  const numberMatch = text.match(/\b(\d{1,4})\b/);
-  if (numberMatch && numberMatch[1] !== event.year.toString()) {
-    return {
-      question: `What number is mentioned in this event?`,
-      correctAnswer: numberMatch[1],
-      options: generateNumberOptions(parseInt(numberMatch[1]))
-    };
-  }
-  
-  // Default to decade question
+  // Question 4: Decade
   const decade = Math.floor(event.year / 10) * 10;
-  return {
-    question: `In which decade did this event occur?`,
-    correctAnswer: `The ${decade}s`,
+  questions.push({
+    question: `The event "${event.text}" happened in which decade?`,
+    correctAnswer: `${decade}s`,
     options: [
-      `The ${decade}s`,
-      `The ${decade - 10}s`,
-      `The ${decade + 10}s`,
-      `The ${decade + 20}s`
-    ].sort(() => Math.random() - 0.5)
-  };
-};
+      `${decade}s`,
+      `${decade - 10}s`,
+      `${decade + 10}s`,
+      `${decade + 20}s`,
+    ].sort(() => Math.random() - 0.5),
+    difficulty: 'easy'
+  });
 
-// Helper: Generate number options
-const generateNumberOptions = (correctNumber) => {
-  const options = [correctNumber.toString()];
-  const offsets = [-1, 1, -5, 5, -10, 10];
-  
-  while (options.length < 4) {
-    const offset = offsets[Math.floor(Math.random() * offsets.length)];
-    const wrongNumber = (correctNumber + offset).toString();
-    if (!options.includes(wrongNumber) && parseInt(wrongNumber) > 0) {
-      options.push(wrongNumber);
-    }
-  }
-  
-  return options.sort(() => Math.random() - 0.5);
-};
+  // Question 5: Half of century (more complex)
+  const half = (event.year % 100) < 50 ? "First half" : "Second half";
+  const quarterCentury = Math.floor((event.year % 100) / 25);
+  const quarterNames = ["First quarter", "Second quarter", "Third quarter", "Fourth quarter"];
+  questions.push({
+    question: `More precisely, "${event.text}" occurred in which quarter of its century?`,
+    correctAnswer: quarterNames[quarterCentury],
+    options: quarterNames,
+    difficulty: 'hard'
+  });
 
-// Helper: Create significance question
-const createSignificanceQuestion = (text, year) => {
-  const textLower = text.toLowerCase();
+  // Question 6: Time period before/after
+  const currentYear = new Date().getFullYear();
+  const yearsAgo = currentYear - event.year;
+  let timeAnswer;
+  if (yearsAgo < 100) timeAnswer = "Less than 100 years ago";
+  else if (yearsAgo < 500) timeAnswer = "100-500 years ago";
+  else if (yearsAgo < 1000) timeAnswer = "500-1000 years ago";
+  else timeAnswer = "More than 1000 years ago";
   
-  if (textLower.includes('first') || textLower.includes('began')) {
-    return {
-      question: `What was the historical significance of this event?`,
-      correctAnswer: 'It was a beginning or first occurrence',
-      options: [
-        'It was a beginning or first occurrence',
-        'It ended a major conflict',
-        'It was a continuation of existing practice',
-        'It had no major significance'
-      ].sort(() => Math.random() - 0.5)
-    };
-  } else if (textLower.includes('end') || textLower.includes('concluded') || textLower.includes('died')) {
-    return {
-      question: `What was the historical significance of this event?`,
-      correctAnswer: 'It marked an ending or conclusion',
-      options: [
-        'It marked an ending or conclusion',
-        'It started a new era',
-        'It was a beginning or first occurrence',
-        'It had no major significance'
-      ].sort(() => Math.random() - 0.5)
-    };
-  } else {
-    // Default: Time period question
-    let period = 'Ancient times';
-    if (year >= 1900) period = '20th-21st century';
-    else if (year >= 1800) period = '19th century';
-    else if (year >= 1700) period = '18th century';
-    else if (year >= 1600) period = '17th century';
-    else if (year >= 1500) period = 'Renaissance era';
-    else if (year >= 1000) period = 'Medieval period';
-    
-    return {
-      question: `This event occurred during which historical period?`,
-      correctAnswer: period,
-      options: ['Ancient times', 'Medieval period', 'Renaissance era', '19th century', '20th-21st century']
-        .filter(p => p === period || Math.random() > 0.5)
-        .slice(0, 4)
-        .sort(() => Math.random() - 0.5)
-    };
-  }
+  questions.push({
+    question: `How long ago from today did "${event.text}" occur?`,
+    correctAnswer: timeAnswer,
+    options: ["Less than 100 years ago", "100-500 years ago", "500-1000 years ago", "More than 1000 years ago"],
+    difficulty: 'hard'
+  });
+
+  // Question 7: Historical era/period
+  let era;
+  if (event.year < 500) era = "Ancient Era";
+  else if (event.year < 1500) era = "Medieval Period";
+  else if (event.year < 1800) era = "Early Modern Period";
+  else if (event.year < 1900) era = "Industrial Age";
+  else if (event.year < 2000) era = "20th Century";
+  else era = "21st Century";
+
+  questions.push({
+    question: `Which historical period does "${event.text}" belong to?`,
+    correctAnswer: era,
+    options: ["Ancient Era", "Medieval Period", "Early Modern Period", "Industrial Age", "20th Century", "21st Century"]
+      .filter(e => e === era || Math.random() > 0.5)
+      .slice(0, 4)
+      .concat(era)
+      .filter((v, i, a) => a.indexOf(v) === i)
+      .sort(() => Math.random() - 0.5),
+    difficulty: 'hard'
+  });
+
+  // Question 8: Year range
+  const rangeStart = Math.floor(event.year / 50) * 50;
+  questions.push({
+    question: `"${event.text}" occurred between which years?`,
+    correctAnswer: `${rangeStart}-${rangeStart + 49}`,
+    options: [
+      `${rangeStart}-${rangeStart + 49}`,
+      `${rangeStart - 50}-${rangeStart - 1}`,
+      `${rangeStart + 50}-${rangeStart + 99}`,
+      `${rangeStart - 100}-${rangeStart - 51}`,
+    ].sort(() => Math.random() - 0.5),
+    difficulty: 'hard'
+  });
+
+  return questions;
 };
 
 
@@ -370,26 +136,18 @@ export const QuizModal = ({ event, onClose }) => {
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    // Save original body overflow
-    const originalOverflow = document.body.style.overflow;
-    
-    // Prevent body scroll
+    const scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
-    
-    // Hide header when modal is open
-    const header = document.querySelector('.site-header');
-    if (header) {
-      header.style.display = 'none';
-    }
-    
-    // Cleanup function
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+
     return () => {
-      document.body.style.overflow = originalOverflow;
-      
-      // Show header again
-      if (header) {
-        header.style.display = '';
-      }
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, scrollY);
     };
   }, []);
 
@@ -412,6 +170,16 @@ export const QuizModal = ({ event, onClose }) => {
       }
     });
     return score;
+  };
+
+  const getScoreMessage = () => {
+    const score = calculateScore();
+    const percentage = (score / questions.length) * 100;
+    if (percentage === 100) return "Perfect! 🎉 You're a history expert!";
+    if (percentage >= 80) return "Excellent! 🌟 Great knowledge!";
+    if (percentage >= 60) return "Good job! 👍 Keep learning!";
+    if (percentage >= 40) return "Not bad! 📚 Room for improvement!";
+    return "Keep trying! 💪 History is fascinating!";
   };
 
   const modalVariants = {
@@ -437,73 +205,110 @@ export const QuizModal = ({ event, onClose }) => {
           exit="exit"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="quiz-modal-header">
-            <h2>Test Your Knowledge</h2>
-            <p>This quiz has {questions.length} questions about the selected event.</p>
+          <div className="quiz-header">
+            <h2>🎓 Test Your Knowledge</h2>
+            <button className="close-btn-top" onClick={onClose} aria-label="Close quiz">×</button>
           </div>
+          <p className="quiz-intro">Answer {questions.length} questions about this historical event</p>
           
-          <div className="quiz-modal-body">
-            {!showResult ? (
-              <>
-                <div className="quiz-questions-container">
-                  {questions.map((q, index) => (
-                    <div key={index} className="quiz-question">
-                      <p>{index + 1}. {q.question}</p>
-                      <div className="quiz-options">
-                        {q.options.map((option, i) => (
-                          <motion.button
-                            key={i}
-                            className={`quiz-option ${selectedAnswers[index] === option ? 'selected' : ''}`}
-                            onClick={() => handleAnswerSelect(index, option)}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            {option}
-                          </motion.button>
-                        ))}
-                      </div>
+          {!showResult ? (
+            <>
+              <div className="quiz-questions-container">
+                {questions.map((q, index) => (
+                  <motion.div 
+                    key={index} 
+                    className="quiz-question"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="question-header">
+                      <span className="question-number">Q{index + 1}</span>
+                      <span className={`difficulty-badge ${q.difficulty}`}>
+                        {q.difficulty}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <motion.div
-                className="quiz-result"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                <h3>Your Score: {calculateScore()} / {questions.length}</h3>
-                <ul>
-                  {questions.map((q, index) => (
-                    <li key={index} className={selectedAnswers[index] === q.correctAnswer ? 'correct' : 'incorrect'}>
-                      <strong>Question {index + 1}:</strong> {q.question}
-                      <br />
-                      <strong>Your answer:</strong> {selectedAnswers[index] || "Not answered"}
-                      <br />
-                      <strong>Correct answer:</strong> {q.correctAnswer}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            )}
-          </div>
-          
-          <div className="quiz-modal-footer">
-            {!showResult && (
+                    <p className="question-text">{q.question}</p>
+                    <div className="quiz-options">
+                      {q.options.map((option, i) => (
+                        <motion.button
+                          key={i}
+                          className={`quiz-option ${selectedAnswers[index] === option ? 'selected' : ''}`}
+                          onClick={() => handleAnswerSelect(index, option)}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          {option}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
               <motion.button
                 className="submit-btn"
                 onClick={handleAnswerSubmit}
                 disabled={Object.keys(selectedAnswers).length !== questions.length}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Submit
+                {Object.keys(selectedAnswers).length === questions.length 
+                  ? '✓ Submit Answers' 
+                  : `Answer ${questions.length - Object.keys(selectedAnswers).length} more question${questions.length - Object.keys(selectedAnswers).length !== 1 ? 's' : ''}`
+                }
               </motion.button>
-            )}
-            <button className="close-btn" onClick={onClose}>
-              Close
-            </button>
-          </div>
+            </>
+          ) : (
+            <motion.div
+              className="quiz-result"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className="score-display">
+                <h3>Your Score</h3>
+                <div className="score-circle">
+                  <span className="score-number">{calculateScore()}</span>
+                  <span className="score-total">/ {questions.length}</span>
+                </div>
+                <p className="score-message">{getScoreMessage()}</p>
+              </div>
+              
+              <div className="answers-review">
+                <h4>Review Your Answers</h4>
+                {questions.map((q, index) => {
+                  const isCorrect = selectedAnswers[index] === q.correctAnswer;
+                  return (
+                    <motion.div 
+                      key={index} 
+                      className={`answer-item ${isCorrect ? 'correct' : 'incorrect'}`}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <div className="answer-header">
+                        <span className="answer-icon">{isCorrect ? '✓' : '✗'}</span>
+                        <span className="answer-label">Question {index + 1}</span>
+                      </div>
+                      <p className="answer-question">{q.question}</p>
+                      <div className="answer-details">
+                        <p><strong>Your answer:</strong> <span className={isCorrect ? 'text-correct' : 'text-incorrect'}>{selectedAnswers[index] || "Not answered"}</span></p>
+                        {!isCorrect && <p><strong>Correct answer:</strong> <span className="text-correct">{q.correctAnswer}</span></p>}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+              
+              <motion.button 
+                className="retry-btn"
+                onClick={onClose}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Close Quiz
+              </motion.button>
+            </motion.div>
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>
