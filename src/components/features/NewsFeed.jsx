@@ -158,7 +158,9 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
     }
 
     try {
-      const response = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/all/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`);
+      const url = `https://en.wikipedia.org/api/rest_v1/feed/onthisday/all/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+      const response = await fetch(url);
+      
       if (response.ok) {
         const data = await response.json();
         const events = (data.events || []).map(e => ({...e, type: 'event'}));
@@ -168,9 +170,11 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
         
         cache.current.set(cacheKey, allEvents);
         return allEvents;
+      } else {
+        console.warn(`API returned status ${response.status} for ${month}/${day}`);
       }
     } catch (error) {
-      console.error(`Failed to fetch data for ${month}/${day}`, error);
+      console.warn(`Failed to fetch data for ${month}/${day}:`, error.message);
     }
     return [];
   };
@@ -228,10 +232,10 @@ export function NewsFeed({ searchQuery, date, yearRange, activeFilter }) {
             setNews(uniqueResults);
           } else {
             // Fallback to the old method if API fails
-            console.error('Search API failed');
+            console.warn('Search API failed with status:', response.status);
           }
         } catch (error) {
-          console.error('Search failed:', error);
+          console.warn('Search failed:', error.message);
         }
         
         setVisibleCount(ITEMS_PER_PAGE);

@@ -55,8 +55,8 @@ export default defineConfig({
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
     treeShaking: true,
-    // Remove console in production
-    drop: ['console', 'debugger'],
+    // Only remove console.log in production, keep warn and error
+    drop: process.env.NODE_ENV === 'production' ? ['debugger'] : [],
     // Optimize for performance
     legalComments: 'none',
     minifyIdentifiers: true,
